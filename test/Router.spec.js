@@ -33,7 +33,7 @@ describe('Router', () => {
                 expect(record.value).to.equal('bar');
                 done();
             });
-            
+
             router.push('/', 'foo');
             router.push('/users/1', 'bar');
         });
