@@ -21,10 +21,10 @@ function split(key) {
     if (key === undefined) {
         throw new Error('You\'ll need a "key" for this ride...');
     } else if (key.length > 0 && key.charAt(0) === delimeter) {
-        key = key.slice(1);
+        key = key.trim().slice(1);
     }
 
-    return key.split(delimeter);
+    return key === '' ? [] : key.split(delimeter);
 }
 
 function Router(callback) {
@@ -58,7 +58,7 @@ function Router(callback) {
 }
 
 function resolve(trie, fragments) {
-    if (fragments.length > 1) {
+    if (fragments.length > 0) {
         var fragment = fragments.shift();
         return resolve(trie.children[fragment] || (trie.children[fragment] = Trie()), fragments);
     }
@@ -66,16 +66,17 @@ function resolve(trie, fragments) {
 }
 
 function propagate(trie, fragments, entry) {
-    if (fragments.length > 1) {
-        var fragment = fragments.shift();
-        propagate(trie[fragment], fragments, entry);
-        var wildcard = trie['*'];
-        if (wildcard) {
-            wildcard.push(entry);
-            propagate(wildcard, fragments, entry);
+    if (trie) {
+        if (fragments.length > 0) {
+            var fragment = fragments.shift();
+            propagate(trie.children[fragment], fragments, entry);
+            var wildcard = trie.children['*'];
+            if (wildcard) {
+                propagate(wildcard, fragments, entry);
+            }
+        } else {
+            trie.push(entry);
         }
-    } else if (trie) {
-        trie.push(entry);
     }
 }
 
