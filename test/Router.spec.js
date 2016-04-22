@@ -23,42 +23,51 @@ describe('Router', () => {
         })
     });
 
-    it('should handle root key', done => {
-        Router(router => {
-            router.route('/').subscribe((key, value) => {
-                expect(key).to.equal('/');
-                expect(value).to.equal('Hi!');
+    describe('route', () => {
+        it('should throw if no key', done => {
+            Router(router => {
+                expect(() => router.route()).to.throw(Error);
                 done();
             });
-
-            router.push('/notroot', 'Doh!');
-            router.push('/', 'Hi!');
         });
-    });
 
-    it('should handle deeper key', done => {
-        Router(router => {
-            router.route('/users/1').subscribe((key, value) => {
-                expect(key).to.equal('/users/1');
-                expect(value).to.equal('bar');
-                done();
+        it('should handle root', done => {
+            Router(router => {
+                router.route('/').subscribe((key, value) => {
+                    expect(key).to.equal('/');
+                    expect(value).to.equal('Hi!');
+                    done();
+                });
+
+                router.push('/notroot', 'Doh!');
+                router.push('/', 'Hi!');
             });
-
-            router.push('/', 'foo');
-            router.push('/users/1', 'bar');
         });
-    });
 
-    it('should handle dynamic routing', done => {
-        Router(router => {
-            router.route('/users/*').subscribe((key, value) => {
-                expect(key).to.equal('/users/1');
-                expect(value).to.equal('bar');
-                done();
+        it('should handle static', done => {
+            Router(router => {
+                router.route('/users/1').subscribe((key, value) => {
+                    expect(key).to.equal('/users/1');
+                    expect(value).to.equal('bar');
+                    done();
+                });
+
+                router.push('/', 'foo');
+                router.push('/users/1', 'bar');
             });
+        });
 
-            router.push('/', 'foo');
-            router.push('/users/1', 'bar');
+        it('should handle wildcard', done => {
+            Router(router => {
+                router.route('/users/*').subscribe((key, value) => {
+                    expect(key).to.equal('/users/1');
+                    expect(value).to.equal('bar');
+                    done();
+                });
+
+                router.push('/', 'foo');
+                router.push('/users/1', 'bar');
+            });
         });
     });
 

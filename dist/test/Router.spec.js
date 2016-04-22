@@ -30,42 +30,53 @@ describe('Router', function () {
         });
     });
 
-    it('should handle root key', function (done) {
-        (0, _Router.Router)(function (router) {
-            router.route('/').subscribe(function (key, value) {
-                (0, _chai.expect)(key).to.equal('/');
-                (0, _chai.expect)(value).to.equal('Hi!');
+    describe('route', function () {
+        it('should throw if no key', function (done) {
+            (0, _Router.Router)(function (router) {
+                (0, _chai.expect)(function () {
+                    return router.route();
+                }).to.throw(Error);
                 done();
             });
-
-            router.push('/notroot', 'Doh!');
-            router.push('/', 'Hi!');
         });
-    });
 
-    it('should handle deeper key', function (done) {
-        (0, _Router.Router)(function (router) {
-            router.route('/users/1').subscribe(function (key, value) {
-                (0, _chai.expect)(key).to.equal('/users/1');
-                (0, _chai.expect)(value).to.equal('bar');
-                done();
+        it('should handle root', function (done) {
+            (0, _Router.Router)(function (router) {
+                router.route('/').subscribe(function (key, value) {
+                    (0, _chai.expect)(key).to.equal('/');
+                    (0, _chai.expect)(value).to.equal('Hi!');
+                    done();
+                });
+
+                router.push('/notroot', 'Doh!');
+                router.push('/', 'Hi!');
             });
-
-            router.push('/', 'foo');
-            router.push('/users/1', 'bar');
         });
-    });
 
-    it('should handle dynamic routing', function (done) {
-        (0, _Router.Router)(function (router) {
-            router.route('/users/*').subscribe(function (key, value) {
-                (0, _chai.expect)(key).to.equal('/users/1');
-                (0, _chai.expect)(value).to.equal('bar');
-                done();
+        it('should handle static', function (done) {
+            (0, _Router.Router)(function (router) {
+                router.route('/users/1').subscribe(function (key, value) {
+                    (0, _chai.expect)(key).to.equal('/users/1');
+                    (0, _chai.expect)(value).to.equal('bar');
+                    done();
+                });
+
+                router.push('/', 'foo');
+                router.push('/users/1', 'bar');
             });
+        });
 
-            router.push('/', 'foo');
-            router.push('/users/1', 'bar');
+        it('should handle wildcard', function (done) {
+            (0, _Router.Router)(function (router) {
+                router.route('/users/*').subscribe(function (key, value) {
+                    (0, _chai.expect)(key).to.equal('/users/1');
+                    (0, _chai.expect)(value).to.equal('bar');
+                    done();
+                });
+
+                router.push('/', 'foo');
+                router.push('/users/1', 'bar');
+            });
         });
     });
 
