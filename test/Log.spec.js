@@ -3,7 +3,7 @@ import Log from '../lib/Log';
 
 describe('Log', () => {
 
-    it('should throw error if no callback', () => {
+    it('should throw if no callback', () => {
         expect(() => Log()).to.throw(Error);
     });
 
@@ -11,7 +11,7 @@ describe('Log', () => {
         Log(log => {
             var expected = [1, 2];
 
-            log.push.apply(null, expected);
+            expected.forEach(value => log.push(value));
 
             expected.push(3);
 
@@ -36,6 +36,19 @@ describe('Log', () => {
                 log.push(1);
             }).to.throw(Error);
             done();
+        });
+    });
+
+    describe('push', () => {
+        it('should create list when args > 1', done => {
+            Log(log => {
+                log.subscribe(list => {
+                    expect(list.size).to.equal(3);
+                    done();
+                });
+
+                log.push(1, 2, 3);
+            });
         });
     });
 });

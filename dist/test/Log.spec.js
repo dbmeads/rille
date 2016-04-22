@@ -10,7 +10,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 describe('Log', function () {
 
-    it('should throw error if no callback', function () {
+    it('should throw if no callback', function () {
         (0, _chai.expect)(function () {
             return (0, _Log2.default)();
         }).to.throw(Error);
@@ -20,7 +20,9 @@ describe('Log', function () {
         (0, _Log2.default)(function (log) {
             var expected = [1, 2];
 
-            log.push.apply(null, expected);
+            expected.forEach(function (value) {
+                return log.push(value);
+            });
 
             expected.push(3);
 
@@ -45,6 +47,19 @@ describe('Log', function () {
                 log.push(1);
             }).to.throw(Error);
             done();
+        });
+    });
+
+    describe('push', function () {
+        it('should create list when args > 1', function (done) {
+            (0, _Log2.default)(function (log) {
+                log.subscribe(function (list) {
+                    (0, _chai.expect)(list.size).to.equal(3);
+                    done();
+                });
+
+                log.push(1, 2, 3);
+            });
         });
     });
 });

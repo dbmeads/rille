@@ -15,6 +15,8 @@ var _Log2 = _interopRequireDefault(_Log);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
 var delimeter = '/';
 
 function split(key) {
@@ -36,13 +38,15 @@ function Router(callback) {
         }
     };
 
-    var log = (0, _Log2.default)(function (log) {
+    var log = (0, _Log2.default)({
+        schema: {
+            type: 'array',
+            'minItems': 2
+        }
+    }, function (log) {
         callback(Object.assign({
-            push: function push(key, value) {
-                log.push({
-                    key: key,
-                    value: value
-                });
+            push: function push() {
+                log.push.apply(log, arguments);
             },
             toJSON: function toJSON() {
                 return JSON.stringify(trie);
@@ -51,7 +55,7 @@ function Router(callback) {
     });
 
     log.subscribe(function (entry) {
-        propagate(trie, split(entry.get('key')), entry);
+        propagate(trie, split(entry.get(0)), entry);
     });
 
     return router;
@@ -92,7 +96,7 @@ function Trie() {
         children: {},
         push: function push(entry) {
             subs.forEach(function (cb) {
-                cb(entry.toJS());
+                cb.apply(undefined, _toConsumableArray(entry.toJS()));
             });
         },
 

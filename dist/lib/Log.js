@@ -43,15 +43,14 @@ function Log() {
                     args[_key2] = arguments[_key2];
                 }
 
-                args.forEach(function (entry) {
-                    if (schema && !_tv2.default.validate(entry, schema)) {
-                        throw _tv2.default.error;
-                    }
-                    entry = _immutable2.default.fromJS(entry);
-                    entries.push(entry);
-                    subs.forEach(function (cb) {
-                        cb(entry);
-                    });
+                var entry = args.length === 1 ? args[0] : args;
+                if (schema && !_tv2.default.validate(entry, schema)) {
+                    throw _tv2.default.error;
+                }
+                entry = _immutable2.default.fromJS(entry);
+                entries.push(entry);
+                subs.forEach(function (cb) {
+                    cb(entry);
                 });
                 return this;
             }
