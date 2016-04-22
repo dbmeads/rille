@@ -20,4 +20,17 @@ describe('Log', () => {
             log.push(3);
         });
     });
+
+    it('should be capable of validating each entry', done => {
+        Log({
+            schema: {
+                type: 'array'
+            }
+        }, log => {
+            expect(() => {
+                log.push(1);
+            }).to.throw(Error);
+            done();
+        });
+    });
 });

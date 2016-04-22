@@ -27,4 +27,17 @@ describe('Log', function () {
             log.push(3);
         });
     });
+
+    it('should be capable of validating each entry', function (done) {
+        (0, _Log2.default)({
+            schema: {
+                type: 'array'
+            }
+        }, function (log) {
+            (0, _chai.expect)(function () {
+                log.push(1);
+            }).to.throw(Error);
+            done();
+        });
+    });
 });

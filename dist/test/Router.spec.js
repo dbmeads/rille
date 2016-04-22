@@ -6,6 +6,12 @@ var _Router = require('../lib/Router');
 
 describe('Router', function () {
 
+    it('should throw error if no callback', function () {
+        (0, _chai.expect)(function () {
+            return (0, _Router.Router)();
+        }).to.throw(Error);
+    });
+
     it('should handle root key', function (done) {
         (0, _Router.Router)(function (router) {
             router.route('/').subscribe(function (record) {

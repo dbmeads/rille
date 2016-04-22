@@ -3,6 +3,10 @@ import {Router} from '../lib/Router';
 
 describe('Router', () => {
 
+    it('should throw error if no callback', () => {
+        expect(() => Router()).to.throw(Error);
+    });
+
     it('should handle root key', done => {
         Router(router => {
             router.route('/').subscribe(record => {

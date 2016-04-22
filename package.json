@@ -18,7 +18,8 @@
     "test": "npm run build && npm run mocha"
   },
   "dependencies": {
-    "immutable": "^3.8.1"
+    "immutable": "^3.8.1",
+    "tv4": "^1.2.7"
   },
   "devDependencies": {
     "babel-cli": "^6.7.5",
