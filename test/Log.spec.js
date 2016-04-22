@@ -2,6 +2,11 @@ import {expect} from 'chai';
 import Log from '../lib/Log';
 
 describe('Log', () => {
+
+    it('should throw error if no callback', () => {
+        expect(() => Log()).to.throw(Error);
+    });
+
     it('should stream previous and future entries', done => {
         Log(log => {
             var expected = [1, 2];

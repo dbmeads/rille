@@ -9,6 +9,13 @@ var _Log2 = _interopRequireDefault(_Log);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 describe('Log', function () {
+
+    it('should throw error if no callback', function () {
+        (0, _chai.expect)(function () {
+            return (0, _Log2.default)();
+        }).to.throw(Error);
+    });
+
     it('should stream previous and future entries', function (done) {
         (0, _Log2.default)(function (log) {
             var expected = [1, 2];
