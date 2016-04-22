@@ -32,9 +32,7 @@ describe('Log', () => {
                 type: 'array'
             }
         }, log => {
-            expect(() => {
-                log.push(1);
-            }).to.throw(Error);
+            expect(() => log.push(1)).to.throw(Error);
             done();
         });
     });

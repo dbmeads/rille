@@ -44,7 +44,7 @@ describe('Log', function () {
             }
         }, function (log) {
             (0, _chai.expect)(function () {
-                log.push(1);
+                return log.push(1);
             }).to.throw(Error);
             done();
         });
