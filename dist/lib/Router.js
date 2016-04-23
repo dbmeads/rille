@@ -9,9 +9,9 @@ var _immutable = require('immutable');
 
 var _immutable2 = _interopRequireDefault(_immutable);
 
-var _Dir = require('./Dir');
+var _Store = require('./Store');
 
-var _Dir2 = _interopRequireDefault(_Dir);
+var _Store2 = _interopRequireDefault(_Store);
 
 var _Log = require('./Log');
 
@@ -22,7 +22,7 @@ var _util = require('./util');
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function Router(callback) {
-    var root = (0, _Dir2.default)();
+    var root = (0, _Store2.default)();
 
     var router = {
         route: function route(key) {
@@ -51,25 +51,25 @@ function Router(callback) {
     return router;
 }
 
-function resolve(dir, fragments) {
+function resolve(store, fragments) {
     if (fragments.length > 0) {
         var fragment = fragments.shift();
-        return resolve(dir.children[fragment] || (dir.children[fragment] = (0, _Dir2.default)()), fragments);
+        return resolve(store.children[fragment] || (store.children[fragment] = (0, _Store2.default)()), fragments);
     }
-    return dir.obs;
+    return store.obs;
 }
 
-function propagate(dir, fragments, entry) {
+function propagate(store, fragments, entry) {
     if (fragments.length > 0) {
-        propagate(ensure(dir, fragments.shift()), fragments, entry);
-        propagate(ensure(dir, '*'), fragments, entry);
+        propagate(ensure(store, fragments.shift()), fragments, entry);
+        propagate(ensure(store, '*'), fragments, entry);
     } else {
-        dir.push(entry);
+        store.push(entry);
     }
 }
 
-function ensure(dir, fragment) {
-    return dir.children[fragment] ? dir.children[fragment] : dir.children[fragment] = (0, _Dir2.default)();
+function ensure(store, fragment) {
+    return store.children[fragment] ? store.children[fragment] : store.children[fragment] = (0, _Store2.default)();
 }
 
 exports.default = Router;
