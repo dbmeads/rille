@@ -35,4 +35,15 @@ describe('Store', () => {
         });
     });
 
+    describe('entry', () => {
+        it('should handle current entry', () => {
+            store.push('', 'hi!');
+
+            var entry = store.entry();
+
+            expect(entry[0]).to.equal('');
+            expect(entry[1]).to.equal('hi!');
+        })
+    });
+
 });

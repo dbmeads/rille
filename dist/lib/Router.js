@@ -5,10 +5,6 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.Router = undefined;
 
-var _immutable = require('immutable');
-
-var _immutable2 = _interopRequireDefault(_immutable);
-
 var _Store = require('./Store');
 
 var _Store2 = _interopRequireDefault(_Store);

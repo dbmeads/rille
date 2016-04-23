@@ -50,6 +50,9 @@ function _Store() {
     var children = {};
 
     var consumer = {
+        entry: function entry() {
+            return entries[entries.length - 1];
+        },
         exists: function exists(fragment) {
             return !!children[fragment];
         },

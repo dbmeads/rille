@@ -37,4 +37,15 @@ describe('Store', function () {
             });
         });
     });
+
+    describe('entry', function () {
+        it('should handle current entry', function () {
+            store.push('', 'hi!');
+
+            var entry = store.entry();
+
+            (0, _chai.expect)(entry[0]).to.equal('');
+            (0, _chai.expect)(entry[1]).to.equal('hi!');
+        });
+    });
 });
