@@ -9,9 +9,9 @@
 * [Change Log](#change-log)
 
 #### Modules
+* [Dir](#dir)
 * [Log](#log)
 * [Router](#router)
-* [Store](#store)
 
 ## Examples
 
@@ -31,6 +31,14 @@ $ npm test
 
 [Back To Top](#quick-links)
 
+## Dir
+
+```js
+Dir();
+```
+
+[Back To Top](#quick-links)
+
 ## Log
 
 ```js
@@ -43,14 +51,6 @@ Log();
 
 ```js
 Router();
-```
-
-[Back To Top](#quick-links)
-
-## Store
-
-```js
-Store();
 ```
 
 [Back To Top](#quick-links)

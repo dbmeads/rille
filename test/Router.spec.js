@@ -10,22 +10,6 @@ describe('Router', () => {
         expect(() => Router()).to.throw(Error);
     });
 
-    it('should provide JSON dump', done => {
-        Router(router => {
-            router.route('/some/kind/of/path');
-
-            var json = router.toJSON();
-
-            ['some', 'kind', 'of', 'path'].forEach(fragment => {
-                expect(json.indexOf(fragment)).to.be.above(0);
-            });
-
-            expect(() => JSON.parse(json)).to.not.throw(Error);
-
-            done();
-        })
-    });
-
     describe('route', () => {
         it('should throw if no key', done => {
             Router(router => {
@@ -42,8 +26,8 @@ describe('Router', () => {
                     done();
                 });
 
-                router.log.push('/notroot', 'Doh!');
-                router.log.push('/', 'Hi!');
+                router.push('/notroot', 'Doh!');
+                router.push('/', 'Hi!');
             });
         });
 
@@ -55,8 +39,8 @@ describe('Router', () => {
                     done();
                 });
 
-                router.log.push('/', 'foo');
-                router.log.push('/users/1', 'bar');
+                router.push('/', 'foo');
+                router.push('/users/1', 'bar');
             });
         });
 
@@ -68,8 +52,8 @@ describe('Router', () => {
                     done();
                 });
 
-                router.log.push('/', 'foo');
-                router.log.push('/users/1', 'bar');
+                router.push('/', 'foo');
+                router.push('/users/1', 'bar');
             });
         });
 
@@ -85,8 +69,8 @@ describe('Router', () => {
 
                 unsubscribe();
 
-                router.log.push('/', 'foo');
-                router.log.push('/users/1', 'bar');
+                router.push('/', 'foo');
+                router.push('/users/1', 'bar');
 
                 router.route('/users/*').subscribe(() => {
                     expect(spy).to.not.have.been.called.once;
@@ -99,11 +83,11 @@ describe('Router', () => {
             var expected = {name: 'David'};
 
             Router(router => {
-                router.log.push('/profile', expected);
+                router.push('/profile', expected);
 
                 router.route('/profile').subscribe((key, value) => {
                     expect(key).to.equal('/profile');
-                    expect(value.toJS()).to.eql(expected);
+                    expect(value).to.eql(expected);
                     done();
                 });
             });
@@ -113,7 +97,7 @@ describe('Router', () => {
     describe('push', () => {
         it('should throw if no key', done => {
             Router(router => {
-                expect(() => router.log.push()).to.throw(Error);
+                expect(() => router.push()).to.throw(Error);
                 done();
             })
         });

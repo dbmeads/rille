@@ -22,24 +22,6 @@ describe('Router', function () {
         }).to.throw(Error);
     });
 
-    it('should provide JSON dump', function (done) {
-        (0, _Router.Router)(function (router) {
-            router.route('/some/kind/of/path');
-
-            var json = router.toJSON();
-
-            ['some', 'kind', 'of', 'path'].forEach(function (fragment) {
-                (0, _chai.expect)(json.indexOf(fragment)).to.be.above(0);
-            });
-
-            (0, _chai.expect)(function () {
-                return JSON.parse(json);
-            }).to.not.throw(Error);
-
-            done();
-        });
-    });
-
     describe('route', function () {
         it('should throw if no key', function (done) {
             (0, _Router.Router)(function (router) {
@@ -58,8 +40,8 @@ describe('Router', function () {
                     done();
                 });
 
-                router.log.push('/notroot', 'Doh!');
-                router.log.push('/', 'Hi!');
+                router.push('/notroot', 'Doh!');
+                router.push('/', 'Hi!');
             });
         });
 
@@ -71,8 +53,8 @@ describe('Router', function () {
                     done();
                 });
 
-                router.log.push('/', 'foo');
-                router.log.push('/users/1', 'bar');
+                router.push('/', 'foo');
+                router.push('/users/1', 'bar');
             });
         });
 
@@ -84,8 +66,8 @@ describe('Router', function () {
                     done();
                 });
 
-                router.log.push('/', 'foo');
-                router.log.push('/users/1', 'bar');
+                router.push('/', 'foo');
+                router.push('/users/1', 'bar');
             });
         });
 
@@ -101,8 +83,8 @@ describe('Router', function () {
 
                 unsubscribe();
 
-                router.log.push('/', 'foo');
-                router.log.push('/users/1', 'bar');
+                router.push('/', 'foo');
+                router.push('/users/1', 'bar');
 
                 router.route('/users/*').subscribe(function () {
                     (0, _chai.expect)(spy).to.not.have.been.called.once;
@@ -115,11 +97,11 @@ describe('Router', function () {
             var expected = { name: 'David' };
 
             (0, _Router.Router)(function (router) {
-                router.log.push('/profile', expected);
+                router.push('/profile', expected);
 
                 router.route('/profile').subscribe(function (key, value) {
                     (0, _chai.expect)(key).to.equal('/profile');
-                    (0, _chai.expect)(value.toJS()).to.eql(expected);
+                    (0, _chai.expect)(value).to.eql(expected);
                     done();
                 });
             });
@@ -130,7 +112,7 @@ describe('Router', function () {
         it('should throw if no key', function (done) {
             (0, _Router.Router)(function (router) {
                 (0, _chai.expect)(function () {
-                    return router.log.push();
+                    return router.push();
                 }).to.throw(Error);
                 done();
             });
