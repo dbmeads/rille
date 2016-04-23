@@ -4,36 +4,36 @@ var _index = require('../lib/index');
 
 var _chai = require('chai');
 
-describe('Dir', function () {
+describe('Store', function () {
 
-    var dir;
+    var store;
 
     beforeEach(function () {
-        dir = (0, _index.Dir)();
+        store = (0, _index.Store)();
     });
 
     describe('exists', function () {
         it('should handle no child', function () {
-            (0, _chai.expect)(dir.exists('test')).to.be.false;
+            (0, _chai.expect)(store.exists('test')).to.be.false;
         });
     });
 
     describe('child', function () {
         it('should create child', function () {
-            var child = dir.child('test');
+            var child = store.child('test');
 
-            (0, _chai.expect)(dir.exists('test')).to.be.true;
+            (0, _chai.expect)(store.exists('test')).to.be.true;
             (0, _chai.expect)(child).to.exist;
         });
 
         it('should create deep child', function () {
             var fragments = ['i', 'am', 'deep'];
 
-            dir.child(fragments);
+            store.child(fragments);
 
             fragments.forEach(function (fragment) {
-                (0, _chai.expect)(dir.exists(fragment)).to.be.true;
-                dir = dir.child(fragment);
+                (0, _chai.expect)(store.exists(fragment)).to.be.true;
+                store = store.child(fragment);
             });
         });
     });

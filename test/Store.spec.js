@@ -1,36 +1,36 @@
-import {Dir} from '../lib/index';
+import {Store} from '../lib/index';
 import {expect} from 'chai';
 
-describe('Dir', () => {
+describe('Store', () => {
 
-    var dir;
+    var store;
 
     beforeEach(() => {
-        dir = Dir();
+        store = Store();
     });
 
     describe('exists', () => {
         it('should handle no child', () => {
-            expect(dir.exists('test')).to.be.false;
+            expect(store.exists('test')).to.be.false;
         });
     });
 
     describe('child', () => {
         it('should create child', () => {
-            var child = dir.child('test');
+            var child = store.child('test');
 
-            expect(dir.exists('test')).to.be.true;
+            expect(store.exists('test')).to.be.true;
             expect(child).to.exist;
         });
 
         it('should create deep child', () => {
             var fragments = ['i', 'am', 'deep'];
 
-            dir.child(fragments);
+            store.child(fragments);
 
             fragments.forEach(fragment => {
-                expect(dir.exists(fragment)).to.be.true;
-                dir = dir.child(fragment);
+                expect(store.exists(fragment)).to.be.true;
+                store = store.child(fragment);
             });
         });
     });

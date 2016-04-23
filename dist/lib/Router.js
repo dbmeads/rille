@@ -9,18 +9,18 @@ var _immutable = require('immutable');
 
 var _immutable2 = _interopRequireDefault(_immutable);
 
-var _Dir = require('./Dir');
+var _Store = require('./Store');
 
-var _Dir2 = _interopRequireDefault(_Dir);
+var _Store2 = _interopRequireDefault(_Store);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function Router(callback) {
-    var root = (0, _Dir2.default)();
+    var root = (0, _Store2.default)();
 
     var router = {
         route: function route(key) {
-            return root.child(_Dir2.default.parseKey(key)).consumer;
+            return root.child(_Store2.default.parseKey(key)).consumer;
         }
     };
 

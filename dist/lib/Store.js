@@ -11,37 +11,37 @@ var delimiter = '/';
 function parseKey(key) {
     if (key === undefined) {
         throw new Error('You\'ll need a "key" for this ride...');
-    } else if (key.length > 0 && key.charAt(0) === Dir.delimiter) {
+    } else if (key.length > 0 && key.charAt(0) === Store.delimiter) {
         key = key.trim().slice(1);
     }
-    return key === '' ? [] : key.split(Dir.delimiter);
+    return key === '' ? [] : key.split(Store.delimiter);
 }
 
-function _child(dir, fragments) {
+function _child(store, fragments) {
     if (Array.isArray(fragments)) {
         if (fragments.length > 1) {
-            return _child(_child(dir, fragments.shift()), fragments);
+            return _child(_child(store, fragments.shift()), fragments);
         } else if (fragments.length > 0) {
-            return _child(dir, fragments.shift());
+            return _child(store, fragments.shift());
         }
-        return dir;
+        return store;
     }
-    return dir.children[fragments] || (dir.children[fragments] = _Dir());
+    return store.children[fragments] || (store.children[fragments] = _Store());
 }
 
-function propagate(dir, fragments, entry) {
+function propagate(store, fragments, entry) {
     if (fragments.length > 0) {
-        propagate(_child(dir, fragments.shift()), fragments, entry);
-        propagate(_child(dir, '*'), fragments, entry);
+        propagate(_child(store, fragments.shift()), fragments, entry);
+        propagate(_child(store, '*'), fragments, entry);
     } else {
-        dir.entries.push(entry);
-        dir.subs.forEach(function (callback) {
+        store.entries.push(entry);
+        store.subs.forEach(function (callback) {
             return callback.apply(undefined, _toConsumableArray(entry));
         });
     }
 }
 
-function _Dir() {
+function _Store() {
     var subs = new Set();
     var entries = [];
     var children = {};
@@ -67,34 +67,34 @@ function _Dir() {
                 fragments[_key] = arguments[_key];
             }
 
-            return _child(dir, fragments);
+            return _child(store, fragments);
         },
         push: function push() {
             for (var _len2 = arguments.length, entry = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
                 entry[_key2] = arguments[_key2];
             }
 
-            propagate(dir, parseKey(entry[0]), entry);
+            propagate(store, parseKey(entry[0]), entry);
         },
 
         consumer: consumer
     }, consumer);
 
-    var dir = Object.assign({
+    var store = Object.assign({
         children: children,
         entries: entries,
         subs: subs,
         producer: producer
     }, producer);
 
-    return dir;
+    return store;
 }
 
-function Dir() {
-    return _Dir().producer;
+function Store() {
+    return _Store().producer;
 }
 
-Object.assign(Dir, { delimiter: delimiter, parseKey: parseKey });
+Object.assign(Store, { delimiter: delimiter, parseKey: parseKey });
 
-exports.default = Dir;
-exports.Dir = Dir;
+exports.default = Store;
+exports.Store = Store;

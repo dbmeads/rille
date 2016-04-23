@@ -1,6 +1,6 @@
 {
   "name": "rille",
-  "version": "0.0.6",
+  "version": "0.0.8",
   "description": "Rille",
   "main": "dist/lib/index.js",
   "author": "dbmeads@hotmail.com",
@@ -18,7 +18,6 @@
     "test": "npm run build && npm run mocha"
   },
   "dependencies": {
-    "immutable": "^3.8.1",
     "tv4": "^1.2.7"
   },
   "devDependencies": {
