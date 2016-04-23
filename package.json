@@ -1,6 +1,6 @@
 {
   "name": "rille",
-  "version": "0.0.4",
+  "version": "0.0.6",
   "description": "Rille",
   "main": "dist/lib/index.js",
   "author": "dbmeads@hotmail.com",
