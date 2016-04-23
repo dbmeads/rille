@@ -16,6 +16,9 @@ function Store() {
             entries.forEach(function (entry) {
                 cb.apply(undefined, _toConsumableArray(entry));
             });
+            return function () {
+                return subs.delete(cb);
+            };
         }
     };
     var store = {

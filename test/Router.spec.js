@@ -1,5 +1,8 @@
-import {expect} from 'chai';
+import chai, {expect} from 'chai';
+import spies from 'chai-spies';
 import {Router} from '../lib/Router';
+
+chai.use(spies);
 
 describe('Router', () => {
 
@@ -67,6 +70,28 @@ describe('Router', () => {
 
                 router.log.push('/', 'foo');
                 router.log.push('/users/1', 'bar');
+            });
+        });
+
+        it('should handle unsubscribe', done => {
+            Router(router => {
+                var spy = chai.spy((key, value) => {
+                    expect(key).to.equal('/users/1');
+                    expect(value).to.equal('bar');
+                    done();
+                });
+
+                var unsubscribe = router.route('/users/*').subscribe(spy);
+
+                unsubscribe();
+
+                router.log.push('/', 'foo');
+                router.log.push('/users/1', 'bar');
+
+                router.route('/users/*').subscribe(() => {
+                    expect(spy).to.not.have.been.called.once;
+                    done();
+                });
             });
         });
 
