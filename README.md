@@ -30,18 +30,18 @@ $ npm test
 
 [Back To Top](#quick-links)
 
-## Store
-
-```js
-Store();
-```
-
-[Back To Top](#quick-links)
-
 ## Router
 
 ```js
 Router();
+```
+
+[Back To Top](#quick-links)
+
+## Store
+
+```js
+Store();
 ```
 
 [Back To Top](#quick-links)
