@@ -23,15 +23,6 @@ describe('Router', function () {
     });
 
     describe('route', function () {
-        it('should throw if no key', function (done) {
-            (0, _Router.Router)(function (router) {
-                (0, _chai.expect)(function () {
-                    return router.route();
-                }).to.throw(Error);
-                done();
-            });
-        });
-
         it('should handle root', function (done) {
             (0, _Router.Router)(function (router) {
                 router.route('/').subscribe(function (key, value) {
@@ -104,17 +95,6 @@ describe('Router', function () {
                     (0, _chai.expect)(value).to.eql(expected);
                     done();
                 });
-            });
-        });
-    });
-
-    describe('push', function () {
-        it('should throw if no key', function (done) {
-            (0, _Router.Router)(function (router) {
-                (0, _chai.expect)(function () {
-                    return router.push();
-                }).to.throw(Error);
-                done();
             });
         });
     });

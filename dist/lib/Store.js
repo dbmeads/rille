@@ -9,9 +9,8 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 var delimiter = '/';
 
 function parseKey(key) {
-    if (key === undefined) {
-        throw new Error('You\'ll need a "key" for this ride...');
-    } else if (key.length > 0 && key.charAt(0) === Store.delimiter) {
+    key = key || '';
+    if (key.length > 0 && key.charAt(0) === Store.delimiter) {
         key = key.trim().slice(1);
     }
     return key === '' ? [] : key.split(Store.delimiter);
@@ -26,7 +25,11 @@ function _child(store, fragments) {
         }
         return store;
     }
-    return store.children[fragments] || (store.children[fragments] = _Store());
+    if (fragments === '*') {
+        return store.wildcard || (store.wildcard = _Store());
+    } else {
+        return store.children[fragments] || (store.children[fragments] = _Store());
+    }
 }
 
 function propagate(store, fragments, entry) {
@@ -84,7 +87,8 @@ function _Store() {
         children: children,
         entries: entries,
         subs: subs,
-        producer: producer
+        producer: producer,
+        wildcard: undefined
     }, producer);
 
     return store;

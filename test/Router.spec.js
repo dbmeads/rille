@@ -11,13 +11,6 @@ describe('Router', () => {
     });
 
     describe('route', () => {
-        it('should throw if no key', done => {
-            Router(router => {
-                expect(() => router.route()).to.throw(Error);
-                done();
-            });
-        });
-
         it('should handle root', done => {
             Router(router => {
                 router.route('/').subscribe((key, value) => {
@@ -91,15 +84,6 @@ describe('Router', () => {
                     done();
                 });
             });
-        });
-    });
-
-    describe('push', () => {
-        it('should throw if no key', done => {
-            Router(router => {
-                expect(() => router.push()).to.throw(Error);
-                done();
-            })
         });
     });
 
