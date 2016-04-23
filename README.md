@@ -11,6 +11,7 @@
 #### Modules
 * [Log](#log)
 * [Router](#router)
+* [Store](#store)
 
 ## Examples
 
@@ -42,6 +43,14 @@ Log();
 
 ```js
 Router();
+```
+
+[Back To Top](#quick-links)
+
+## Store
+
+```js
+Store();
 ```
 
 [Back To Top](#quick-links)
