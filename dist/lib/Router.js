@@ -30,11 +30,11 @@ function split(key) {
 }
 
 function Router(callback) {
-    var trie = Trie();
+    var dir = Dir();
 
     var router = {
         route: function route(key) {
-            return resolve(trie, split(key));
+            return resolve(dir, split(key));
         }
     };
 
@@ -45,65 +45,67 @@ function Router(callback) {
         }
     }, function (log) {
         callback(Object.assign({
-            push: function push() {
-                log.push.apply(log, arguments);
-            },
+            log: log,
             toJSON: function toJSON() {
-                return JSON.stringify(trie);
+                return JSON.stringify(dir);
             }
         }, router));
     });
 
     log.subscribe(function (entry) {
-        propagate(trie, split(entry.get(0)), entry);
+        propagate(dir, split(entry.get(0)), entry);
     });
 
     return router;
 }
 
-function resolve(trie, fragments) {
+function resolve(dir, fragments) {
     if (fragments.length > 0) {
         var fragment = fragments.shift();
-        return resolve(trie.children[fragment] || (trie.children[fragment] = Trie()), fragments);
+        return resolve(dir.children[fragment] || (dir.children[fragment] = Dir()), fragments);
     }
-    return trie.obs;
+    return dir.obs;
 }
 
-function propagate(trie, fragments, entry) {
-    if (trie) {
-        if (fragments.length > 0) {
-            var fragment = fragments.shift();
-            propagate(trie.children[fragment], fragments, entry);
-            var wildcard = trie.children['*'];
-            if (wildcard) {
-                propagate(wildcard, fragments, entry);
-            }
-        } else {
-            trie.push(entry);
-        }
+function propagate(dir, fragments, entry) {
+    if (fragments.length > 0) {
+        propagate(ensure(dir, fragments.shift()), fragments, entry);
+        propagate(ensure(dir, '*'), fragments, entry);
+    } else {
+        dir.push(entry);
     }
 }
 
-function Trie() {
+function ensure(dir, fragment) {
+    return dir.children[fragment] ? dir.children[fragment] : dir.children[fragment] = Dir();
+}
+
+function Dir() {
     var subs = new Set();
+    var entries = [];
     var obs = {
         subscribe: function subscribe(cb) {
             subs.add(cb);
-            trie.subs++;
+            dir.subs++;
+            entries.forEach(function (entry) {
+                cb.apply(undefined, _toConsumableArray(entry));
+            });
         }
     };
-    var trie = {
+    var dir = {
         children: {},
         push: function push(entry) {
+            entries.push(entry);
+
             subs.forEach(function (cb) {
-                cb.apply(undefined, _toConsumableArray(entry.toJS()));
+                cb.apply(undefined, _toConsumableArray(entry));
             });
         },
 
         subs: 0,
         obs: obs
     };
-    return trie;
+    return dir;
 }
 
 exports.default = Router;

@@ -12,7 +12,7 @@ describe('Router', function () {
         }).to.throw(Error);
     });
 
-    it('should provide JSON trie dump', function (done) {
+    it('should provide JSON dump', function (done) {
         (0, _Router.Router)(function (router) {
             router.route('/some/kind/of/path');
 
@@ -48,8 +48,8 @@ describe('Router', function () {
                     done();
                 });
 
-                router.push('/notroot', 'Doh!');
-                router.push('/', 'Hi!');
+                router.log.push('/notroot', 'Doh!');
+                router.log.push('/', 'Hi!');
             });
         });
 
@@ -61,8 +61,8 @@ describe('Router', function () {
                     done();
                 });
 
-                router.push('/', 'foo');
-                router.push('/users/1', 'bar');
+                router.log.push('/', 'foo');
+                router.log.push('/users/1', 'bar');
             });
         });
 
@@ -74,8 +74,22 @@ describe('Router', function () {
                     done();
                 });
 
-                router.push('/', 'foo');
-                router.push('/users/1', 'bar');
+                router.log.push('/', 'foo');
+                router.log.push('/users/1', 'bar');
+            });
+        });
+
+        it('should return latest entry', function (done) {
+            var expected = { name: 'David' };
+
+            (0, _Router.Router)(function (router) {
+                router.log.push('/profile', expected);
+
+                router.route('/profile').subscribe(function (key, value) {
+                    (0, _chai.expect)(key).to.equal('/profile');
+                    (0, _chai.expect)(value.toJS()).to.eql(expected);
+                    done();
+                });
             });
         });
     });
@@ -84,7 +98,7 @@ describe('Router', function () {
         it('should throw if no key', function (done) {
             (0, _Router.Router)(function (router) {
                 (0, _chai.expect)(function () {
-                    return router.push();
+                    return router.log.push();
                 }).to.throw(Error);
                 done();
             });

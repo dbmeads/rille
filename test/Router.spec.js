@@ -7,7 +7,7 @@ describe('Router', () => {
         expect(() => Router()).to.throw(Error);
     });
 
-    it('should provide JSON trie dump', done => {
+    it('should provide JSON dump', done => {
         Router(router => {
             router.route('/some/kind/of/path');
 
@@ -39,8 +39,8 @@ describe('Router', () => {
                     done();
                 });
 
-                router.push('/notroot', 'Doh!');
-                router.push('/', 'Hi!');
+                router.log.push('/notroot', 'Doh!');
+                router.log.push('/', 'Hi!');
             });
         });
 
@@ -52,8 +52,8 @@ describe('Router', () => {
                     done();
                 });
 
-                router.push('/', 'foo');
-                router.push('/users/1', 'bar');
+                router.log.push('/', 'foo');
+                router.log.push('/users/1', 'bar');
             });
         });
 
@@ -65,8 +65,22 @@ describe('Router', () => {
                     done();
                 });
 
-                router.push('/', 'foo');
-                router.push('/users/1', 'bar');
+                router.log.push('/', 'foo');
+                router.log.push('/users/1', 'bar');
+            });
+        });
+
+        it('should return latest entry', done => {
+            var expected = {name: 'David'};
+
+            Router(router => {
+                router.log.push('/profile', expected);
+
+                router.route('/profile').subscribe((key, value) => {
+                    expect(key).to.equal('/profile');
+                    expect(value.toJS()).to.eql(expected);
+                    done();
+                });
             });
         });
     });
@@ -74,7 +88,7 @@ describe('Router', () => {
     describe('push', () => {
         it('should throw if no key', done => {
             Router(router => {
-                expect(() => router.push()).to.throw(Error);
+                expect(() => router.log.push()).to.throw(Error);
                 done();
             })
         });
