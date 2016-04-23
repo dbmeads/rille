@@ -37,7 +37,7 @@ function propagate(store, fragments, entry) {
         propagate(_child(store, fragments.shift()), fragments, entry);
         propagate(_child(store, '*'), fragments, entry);
     } else {
-        store.entries.push(entry);
+        store.entries[0] = entry;
         store.subs.forEach(function (callback) {
             return callback.apply(undefined, _toConsumableArray(entry));
         });
