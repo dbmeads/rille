@@ -22,6 +22,12 @@ describe('Router', function () {
         router = (0, _Router.Router)();
     });
 
+    it('should know it\'s key', function () {
+        var child = router.route('/test/key/values');
+
+        (0, _chai.expect)(child.key()).to.equal('/test/key/values');
+    });
+
     describe('route', function () {
         it('should handle root', function (done) {
             router.route('/').subscribe(function (key, value) {

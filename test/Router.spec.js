@@ -12,6 +12,12 @@ describe('Router', () => {
         router = Router();
     });
 
+    it('should know it\'s key', () => {
+        var child = router.route('/test/key/values');
+
+        expect(child.key()).to.equal('/test/key/values');
+    });
+
     describe('route', () => {
         it('should handle root', done => {
             router.route('/').subscribe((key, value) => {

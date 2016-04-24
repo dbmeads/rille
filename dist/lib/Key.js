@@ -13,7 +13,15 @@ function parse(key) {
     return key === '' ? [] : key.split(delimiter);
 }
 
-var Key = { parse: parse };
+function stringify(keys) {
+    var key = '';
+    keys.forEach(function (subKey) {
+        return key += delimiter + subKey;
+    });
+    return key;
+}
+
+var Key = { parse: parse, stringify: stringify };
 
 exports.default = Key;
 exports.Key = Key;
