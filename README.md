@@ -9,8 +9,8 @@
 * [Change Log](#change-log)
 
 #### Modules
+* [Key](#key)
 * [Router](#router)
-* [Store](#store)
 
 ## Examples
 
@@ -30,18 +30,18 @@ $ npm test
 
 [Back To Top](#quick-links)
 
-## Router
+## Key
 
 ```js
-Router();
+Key();
 ```
 
 [Back To Top](#quick-links)
 
-## Store
+## Router
 
 ```js
-Store();
+Router();
 ```
 
 [Back To Top](#quick-links)
