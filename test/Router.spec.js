@@ -6,83 +6,75 @@ chai.use(spies);
 
 describe('Router', () => {
 
-    it('should throw if no callback', () => {
-        expect(() => Router()).to.throw(Error);
+    var router;
+
+    beforeEach(() => {
+        router = Router();
     });
 
     describe('route', () => {
         it('should handle root', done => {
-            Router(router => {
-                router.route('/').subscribe((key, value) => {
-                    expect(key).to.equal('/');
-                    expect(value).to.equal('Hi!');
-                    done();
-                });
-
-                router.push('/notroot', 'Doh!');
-                router.push('/', 'Hi!');
+            router.route('/').subscribe((key, value) => {
+                expect(key).to.equal('/');
+                expect(value).to.equal('Hi!');
+                done();
             });
+
+            router.push('/notroot', 'Doh!');
+            router.push('/', 'Hi!');
         });
 
         it('should handle static', done => {
-            Router(router => {
-                router.route('/users/1').subscribe((key, value) => {
-                    expect(key).to.equal('/users/1');
-                    expect(value).to.equal('bar');
-                    done();
-                });
-
-                router.push('/', 'foo');
-                router.push('/users/1', 'bar');
+            router.route('/users/1').subscribe((key, value) => {
+                expect(key).to.equal('/users/1');
+                expect(value).to.equal('bar');
+                done();
             });
+
+            router.push('/', 'foo');
+            router.push('/users/1', 'bar');
         });
 
         it('should handle wildcard', done => {
-            Router(router => {
-                router.route('/users/*').subscribe((key, value) => {
-                    expect(key).to.equal('/users/1');
-                    expect(value).to.equal('bar');
-                    done();
-                });
-
-                router.push('/', 'foo');
-                router.push('/users/1', 'bar');
+            router.route('/users/*').subscribe((key, value) => {
+                expect(key).to.equal('/users/1');
+                expect(value).to.equal('bar');
+                done();
             });
+
+            router.push('/', 'foo');
+            router.push('/users/1', 'bar');
         });
 
         it('should handle unsubscribe', done => {
-            Router(router => {
-                var spy = chai.spy((key, value) => {
-                    expect(key).to.equal('/users/1');
-                    expect(value).to.equal('bar');
-                    done();
-                });
+            var spy = chai.spy((key, value) => {
+                expect(key).to.equal('/users/1');
+                expect(value).to.equal('bar');
+                done();
+            });
 
-                var unsubscribe = router.route('/users/*').subscribe(spy);
+            var unsubscribe = router.route('/users/*').subscribe(spy);
 
-                unsubscribe();
+            unsubscribe();
 
-                router.push('/', 'foo');
-                router.push('/users/1', 'bar');
+            router.push('/', 'foo');
+            router.push('/users/1', 'bar');
 
-                router.route('/users/*').subscribe(() => {
-                    expect(spy).to.not.have.been.called.once;
-                    done();
-                });
+            router.route('/users/*').subscribe(() => {
+                expect(spy).to.not.have.been.called.once;
+                done();
             });
         });
 
         it('should return latest entry', done => {
             var expected = {name: 'David'};
 
-            Router(router => {
-                router.push('/profile', expected);
+            router.push('/profile', expected);
 
-                router.route('/profile').subscribe((key, value) => {
-                    expect(key).to.equal('/profile');
-                    expect(value).to.eql(expected);
-                    done();
-                });
+            router.route('/profile').subscribe((key, value) => {
+                expect(key).to.equal('/profile');
+                expect(value).to.eql(expected);
+                done();
             });
         });
     });

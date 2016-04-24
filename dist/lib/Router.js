@@ -11,18 +11,14 @@ var _Store2 = _interopRequireDefault(_Store);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function Router(callback) {
+function Router() {
     var root = (0, _Store2.default)();
 
-    var router = {
+    return Object.assign({
         route: function route(key) {
             return root.child(_Store2.default.parseKey(key)).consumer;
         }
-    };
-
-    callback(Object.assign({}, router, root));
-
-    return router;
+    }, root);
 }
 
 exports.default = Router;
