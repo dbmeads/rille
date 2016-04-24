@@ -13,26 +13,25 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
-function _child(store, fragments) {
-    if (Array.isArray(fragments)) {
-        if (fragments.length > 1) {
-            return _child(_child(store, fragments.shift()), fragments);
-        } else if (fragments.length > 0) {
-            return _child(store, fragments.shift());
-        }
-        return store;
-    }
-    if (fragments === '*') {
+function myChild(store, fragment) {
+    if (fragment === '*') {
         return store.wildcard || (store.wildcard = Store());
     } else {
-        return store.children[fragments] || (store.children[fragments] = Store());
+        return store.children[fragment] || (store.children[fragment] = Store());
     }
+}
+
+function _child(store, fragments) {
+    if (fragments.length > 0) {
+        return _child(myChild(store, fragments.shift()), fragments);
+    }
+    return store;
 }
 
 function propagate(store, fragments, entry) {
     if (fragments.length > 0) {
-        propagate(_child(store, fragments.shift()), fragments, entry);
-        propagate(_child(store, '*'), fragments, entry);
+        propagate(myChild(store, fragments.shift()), fragments, entry);
+        propagate(myChild(store, '*'), fragments, entry);
     } else {
         store.entries[0] = entry;
         store.subs.forEach(function (callback) {
@@ -47,16 +46,12 @@ function Store() {
     var children = {};
 
     return {
-        child: function child() {
-            for (var _len = arguments.length, fragments = Array(_len), _key = 0; _key < _len; _key++) {
-                fragments[_key] = arguments[_key];
-            }
-
-            return _child(this, fragments);
+        child: function child(key) {
+            return _child(this, Array.isArray(key) ? key : _Key2.default.parse(key));
         },
         push: function push() {
-            for (var _len2 = arguments.length, entry = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
-                entry[_key2] = arguments[_key2];
+            for (var _len = arguments.length, entry = Array(_len), _key = 0; _key < _len; _key++) {
+                entry[_key] = arguments[_key];
             }
 
             propagate(this, _Key2.default.parse(entry[0]), entry);
