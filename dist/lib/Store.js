@@ -3,18 +3,15 @@
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+exports.Store = undefined;
+
+var _Key = require('./Key');
+
+var _Key2 = _interopRequireDefault(_Key);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
-
-var delimiter = '/';
-
-function parseKey(key) {
-    key = key || '';
-    if (key.length > 0 && key.charAt(0) === Store.delimiter) {
-        key = key.trim().slice(1);
-    }
-    return key === '' ? [] : key.split(Store.delimiter);
-}
 
 function _child(store, fragments) {
     if (Array.isArray(fragments)) {
@@ -26,9 +23,9 @@ function _child(store, fragments) {
         return store;
     }
     if (fragments === '*') {
-        return store.wildcard || (store.wildcard = _Store());
+        return store.wildcard || (store.wildcard = Store());
     } else {
-        return store.children[fragments] || (store.children[fragments] = _Store());
+        return store.children[fragments] || (store.children[fragments] = Store());
     }
 }
 
@@ -44,12 +41,26 @@ function propagate(store, fragments, entry) {
     }
 }
 
-function _Store() {
+function Store() {
     var subs = new Set();
     var entries = [];
     var children = {};
 
-    var consumer = {
+    return {
+        child: function child() {
+            for (var _len = arguments.length, fragments = Array(_len), _key = 0; _key < _len; _key++) {
+                fragments[_key] = arguments[_key];
+            }
+
+            return _child(this, fragments);
+        },
+        push: function push() {
+            for (var _len2 = arguments.length, entry = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
+                entry[_key2] = arguments[_key2];
+            }
+
+            propagate(this, _Key2.default.parse(entry[0]), entry);
+        },
         entry: function entry() {
             return entries[entries.length - 1];
         },
@@ -64,44 +75,14 @@ function _Store() {
             return function () {
                 return subs.delete(cb);
             };
-        }
-    };
-
-    var producer = Object.assign({
-        child: function child() {
-            for (var _len = arguments.length, fragments = Array(_len), _key = 0; _key < _len; _key++) {
-                fragments[_key] = arguments[_key];
-            }
-
-            return _child(store, fragments);
-        },
-        push: function push() {
-            for (var _len2 = arguments.length, entry = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
-                entry[_key2] = arguments[_key2];
-            }
-
-            propagate(store, parseKey(entry[0]), entry);
         },
 
-        consumer: consumer
-    }, consumer);
-
-    var store = Object.assign({
         children: children,
         entries: entries,
         subs: subs,
-        producer: producer,
         wildcard: undefined
-    }, producer);
-
-    return store;
+    };
 }
-
-function Store() {
-    return _Store().producer;
-}
-
-Object.assign(Store, { delimiter: delimiter, parseKey: parseKey });
 
 exports.default = Store;
 exports.Store = Store;

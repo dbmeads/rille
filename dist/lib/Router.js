@@ -5,6 +5,10 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.Router = undefined;
 
+var _Key = require('./Key');
+
+var _Key2 = _interopRequireDefault(_Key);
+
 var _Store = require('./Store');
 
 var _Store2 = _interopRequireDefault(_Store);
@@ -12,13 +16,11 @@ var _Store2 = _interopRequireDefault(_Store);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function Router() {
-    var root = (0, _Store2.default)();
-
     return Object.assign({
         route: function route(key) {
-            return root.child(_Store2.default.parseKey(key)).consumer;
+            return this.child(_Key2.default.parse(key));
         }
-    }, root);
+    }, (0, _Store2.default)());
 }
 
 exports.default = Router;
