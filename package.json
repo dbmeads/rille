@@ -1,6 +1,6 @@
 {
   "name": "rille",
-  "version": "0.0.12",
+  "version": "0.0.13",
   "description": "Rille",
   "main": "dist/lib/Router.js",
   "author": "dbmeads@hotmail.com",
