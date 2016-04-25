@@ -10,7 +10,7 @@
 
 #### Modules
 * [Key](#key)
-* [Router](#router)
+* [Route](#route)
 
 ## Examples
 
@@ -38,10 +38,10 @@ Key();
 
 [Back To Top](#quick-links)
 
-## Router
+## Route
 
 ```js
-Router();
+Route();
 ```
 
 [Back To Top](#quick-links)

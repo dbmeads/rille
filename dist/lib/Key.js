@@ -21,11 +21,14 @@ function stringify(keys) {
     if (typeof keys === 'string') {
         return keys;
     }
-    var key = '';
-    keys.forEach(function (subKey) {
-        return key += delimiter + subKey;
-    });
-    return key;
+    if (keys.length > 0) {
+        var key = '';
+        keys.forEach(function (subKey) {
+            return key += delimiter + subKey;
+        });
+        return key;
+    }
+    return '/';
 }
 
 var Key = { parse: parse, stringify: stringify };
