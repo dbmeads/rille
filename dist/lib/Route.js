@@ -13,40 +13,41 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
-function myChild(route, key) {
-    if (key === '*') {
-        return route.wildcard || (route.wildcard = Route(route, key));
-    } else {
-        return route.children[key] || (route.children[key] = Route(route, key));
-    }
+function ensureGen(route, obj, key) {
+    return obj[key] ? obj[key] : obj[key] = Route(route, key);
+}
+
+function nextGen(route, key) {
+    return key === '*' ? ensureGen(route, route, key) : ensureGen(route, route.children, key);
 }
 
 function child(route, keys) {
     if (keys.length > 0) {
-        return child(myChild(route, keys.shift()), keys);
+        return child(nextGen(route, keys.shift()), keys);
     }
     return route;
 }
 
 function propagate(route, keys, entry) {
     if (keys.length > 0) {
-        propagate(myChild(route, keys.shift()), keys, entry);
-        propagate(myChild(route, '*'), keys, entry);
+        propagate(nextGen(route, keys.shift()), keys, entry);
+        propagate(nextGen(route, '*'), keys, entry);
     } else {
-        entry[0] = _Key2.default.stringify(entry[0]);
         route.subs.forEach(function (callback) {
             return callback.apply(undefined, _toConsumableArray(entry));
         });
     }
 }
 
-function _push(route, entry) {
+function root(route) {
     while (route.parent) {
         route = route.parent;
     }
-    propagate(route, entry[0].map(function (v) {
-        return v;
-    }), entry);
+    return route;
+}
+
+function _push(route, entry) {
+    propagate(root(route), _Key2.default.parse(entry[0]), entry);
 }
 
 function Route(parent, key) {
@@ -70,7 +71,7 @@ function Route(parent, key) {
                 entry[_key] = arguments[_key];
             }
 
-            _push(this, [keys].concat(entry));
+            _push(this, [_Key2.default.stringify(keys)].concat(entry));
         },
         exists: function exists(key) {
             return !!children[key];
@@ -88,8 +89,7 @@ function Route(parent, key) {
         parent: parent,
         keys: keys,
         children: children,
-        subs: subs,
-        wildcard: undefined
+        subs: subs
     });
 }
 
