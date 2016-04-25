@@ -18,71 +18,81 @@ describe('Router', () => {
         expect(child.key()).to.equal('/test/key/values');
     });
 
-    describe('route', () => {
-        it('should handle root', done => {
-            router.route('/').subscribe((key, value) => {
-                expect(key).to.equal('/');
-                expect(value).to.equal('Hi!');
-                done();
-            });
-
-            router.push('/notroot', 'Doh!');
-            router.push('/', 'Hi!');
+    it('should handle root', done => {
+        router.route('/').subscribe((key, value) => {
+            expect(key).to.equal('/');
+            expect(value).to.equal('Hi!');
+            done();
         });
 
-        it('should handle static', done => {
-            router.route('/users/1').subscribe((key, value) => {
-                expect(key).to.equal('/users/1');
-                expect(value).to.equal('bar');
-                done();
-            });
+        router.push('/notroot', 'Doh!');
+        router.push('/', 'Hi!');
+    });
 
-            router.push('/', 'foo');
-            router.push('/users/1', 'bar');
+    it('should handle static', done => {
+        router.route('/users/1').subscribe((key, value) => {
+            expect(key).to.equal('/users/1');
+            expect(value).to.equal('bar');
+            done();
         });
 
-        it('should handle wildcard', done => {
-            router.route('/users/*').subscribe((key, value) => {
-                expect(key).to.equal('/users/1');
-                expect(value).to.equal('bar');
-                done();
-            });
+        router.push('/', 'foo');
+        router.push('/users/1', 'bar');
+    });
 
-            router.push('/', 'foo');
-            router.push('/users/1', 'bar');
+    it('should handle wildcard', done => {
+        router.route('/users/*').subscribe((key, value) => {
+            expect(key).to.equal('/users/1');
+            expect(value).to.equal('bar');
+            done();
         });
 
-        it('should handle unsubscribe', done => {
-            var spy = chai.spy((key, value) => {
-                expect(key).to.equal('/users/1');
-                expect(value).to.equal('bar');
-                done();
-            });
+        router.push('/', 'foo');
+        router.push('/users/1', 'bar');
+    });
 
-            var unsubscribe = router.route('/users/*').subscribe(spy);
-
-            unsubscribe();
-
-            router.push('/', 'foo');
-            router.push('/users/1', 'bar');
-
-            router.route('/users/*').subscribe(() => {
-                expect(spy).to.not.have.been.called.once;
-                done();
-            });
+    it('should handle unsubscribe', done => {
+        var spy = chai.spy((key, value) => {
+            expect(key).to.equal('/users/1');
+            expect(value).to.equal('bar');
+            done();
         });
 
-        it('should return latest entry', done => {
-            var expected = {name: 'David'};
+        var unsubscribe = router.route('/users/*').subscribe(spy);
 
-            router.push('/profile', expected);
+        unsubscribe();
 
-            router.route('/profile').subscribe((key, value) => {
-                expect(key).to.equal('/profile');
-                expect(value).to.eql(expected);
-                done();
-            });
+        router.push('/', 'foo');
+        router.push('/users/1', 'bar');
+
+        router.route('/users/*').subscribe(() => {
+            expect(spy).to.not.have.been.called.once;
+            done();
         });
+    });
+
+    it('should return latest entry', done => {
+        var expected = {name: 'David'};
+
+        router.push('/profile', expected);
+
+        router.route('/profile').subscribe((key, value) => {
+            expect(key).to.equal('/profile');
+            expect(value).to.eql(expected);
+            done();
+        });
+    });
+
+    it('should support relative pushes', done => {
+        var child = router.route('/i/am/a/child');
+
+        router.route('/i/am/a/child/*').subscribe((key, value) => {
+            expect(key).to.equal('/i/am/a/child/too');
+            expect(value).to.equal('Yay!');
+            done();
+        });
+
+        child.push('/too', 'Yay!');
     });
 
 });

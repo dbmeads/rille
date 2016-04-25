@@ -61,7 +61,14 @@ function Router(parent, key) {
                 entry[_key] = arguments[_key];
             }
 
-            propagate(this, _Key2.default.parse(entry[0]), entry);
+            if (parent) {
+                entry[0] = _Key2.default.parse(entry[0]);
+                entry[0].unshift(keys[keys.length - 1]);
+                parent.push.apply(parent, entry);
+            } else {
+                entry[0] = _Key2.default.stringify(entry[0]);
+                propagate(this, _Key2.default.parse(entry[0]), entry);
+            }
         },
         entry: function entry() {
             return entries[entries.length - 1];

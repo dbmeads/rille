@@ -6,6 +6,10 @@ Object.defineProperty(exports, "__esModule", {
 var delimiter = '/';
 
 function parse(key) {
+    // Already parsed?
+    if (Array.isArray(key)) {
+        return key;
+    }
     key = key || '';
     if (key.length > 0 && key.charAt(0) === delimiter) {
         key = key.trim().slice(1);
@@ -14,6 +18,9 @@ function parse(key) {
 }
 
 function stringify(keys) {
+    if (typeof keys === 'string') {
+        return keys;
+    }
     var key = '';
     keys.forEach(function (subKey) {
         return key += delimiter + subKey;
