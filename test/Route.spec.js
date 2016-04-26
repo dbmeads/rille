@@ -1,8 +1,5 @@
-import chai, {expect} from 'chai';
-import spies from 'chai-spies';
+import {expect} from 'chai';
 import {Route} from '../lib/Route';
-
-chai.use(spies);
 
 describe('Route', () => {
 
@@ -12,7 +9,7 @@ describe('Route', () => {
         route = Route();
     });
 
-    it('should know it\'s key', () => {
+    it('should know its key', () => {
         var child = route('/test/key/values');
 
         expect(child.key()).to.equal('/test/key/values');

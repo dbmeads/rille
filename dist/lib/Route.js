@@ -14,7 +14,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 function ensureGen(route, obj, key) {
-    return obj[key] ? obj[key] : obj[key] = Route(route, key);
+    return obj[key] ? obj[key] : obj[key] = _Route(route, key);
 }
 
 function nextGen(route, key) {
@@ -50,9 +50,7 @@ function _push(route, entry) {
     propagate(root(route), _Key2.default.parse(entry[0]), entry);
 }
 
-function Route(parent, key) {
-    var subs = new Set();
-    var children = {};
+function _Route(parent, key) {
     var keys = parent ? parent.keys.map(function (v) {
         return v;
     }) : [];
@@ -61,8 +59,17 @@ function Route(parent, key) {
         keys.push(key);
     }
 
+    return {
+        parent: parent,
+        keys: keys,
+        children: {},
+        subs: new Set()
+    };
+}
+
+function wrap(_route) {
     function route(key) {
-        return child(route, _Key2.default.parse(key));
+        return wrap(child(_route, _Key2.default.parse(key)));
     }
 
     return Object.assign(route, {
@@ -71,26 +78,22 @@ function Route(parent, key) {
                 entry[_key] = arguments[_key];
             }
 
-            _push(this, [_Key2.default.stringify(keys)].concat(entry));
-        },
-        exists: function exists(key) {
-            return !!children[key];
+            _push(_route, [_Key2.default.stringify(_route.keys)].concat(entry));
         },
         key: function key() {
-            return _Key2.default.stringify(keys);
+            return _Key2.default.stringify(_route.keys);
         },
         subscribe: function subscribe(cb) {
-            subs.add(cb);
+            _route.subs.add(cb);
             return function () {
-                return subs.delete(cb);
+                return _route.subs.delete(cb);
             };
-        },
-
-        parent: parent,
-        keys: keys,
-        children: children,
-        subs: subs
+        }
     });
+}
+
+function Route() {
+    return wrap(_Route());
 }
 
 exports.default = Route;

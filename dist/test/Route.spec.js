@@ -2,17 +2,7 @@
 
 var _chai = require('chai');
 
-var _chai2 = _interopRequireDefault(_chai);
-
-var _chaiSpies = require('chai-spies');
-
-var _chaiSpies2 = _interopRequireDefault(_chaiSpies);
-
 var _Route = require('../lib/Route');
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-_chai2.default.use(_chaiSpies2.default);
 
 describe('Route', function () {
 
@@ -22,7 +12,7 @@ describe('Route', function () {
         route = (0, _Route.Route)();
     });
 
-    it('should know it\'s key', function () {
+    it('should know its key', function () {
         var child = route('/test/key/values');
 
         (0, _chai.expect)(child.key()).to.equal('/test/key/values');
