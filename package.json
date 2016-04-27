@@ -1,8 +1,8 @@
 {
   "name": "rille",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "description": "Rille",
-  "main": "dist/lib/Router.js",
+  "main": "dist/lib/Route.js",
   "author": "dbmeads@hotmail.com",
   "license": "MIT",
   "repository": {
