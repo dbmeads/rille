@@ -62,16 +62,14 @@ describe('Route', () => {
 
     it('should support plugins', () => {
         var route = Route({
-            route(_route) {
-                _route.entry = undefined;
-                _route.subscribe((...entry) => {
-                    _route.entry = entry;
+            route(route) {
+                route.entry = undefined;
+                route.subscribe((...entry) => {
+                    route.entry = entry;
                 });
             },
-            wrap(_route, route) {
-                route.entry = () => {
-                    return _route.entry;
-                }
+            makePublic(target, route) {
+                target.entry = () => route.entry;
             }
         });
 
