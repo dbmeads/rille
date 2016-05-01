@@ -62,4 +62,28 @@ describe('Route', function () {
 
         child('/too').push('Yay!');
     });
+
+    it('should support plugins', function () {
+        var route = (0, _Route.Route)({
+            route: function route(_route) {
+                _route.entry = undefined;
+                _route.subscribe(function () {
+                    for (var _len = arguments.length, entry = Array(_len), _key = 0; _key < _len; _key++) {
+                        entry[_key] = arguments[_key];
+                    }
+
+                    _route.entry = entry;
+                });
+            },
+            wrap: function wrap(_route, route) {
+                route.entry = function () {
+                    return _route.entry;
+                };
+            }
+        });
+
+        route.push('Test');
+
+        (0, _chai.expect)(route.entry()[1]).to.equal('Test');
+    });
 });

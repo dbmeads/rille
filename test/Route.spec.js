@@ -60,4 +60,24 @@ describe('Route', () => {
         child('/too').push('Yay!');
     });
 
+    it('should support plugins', () => {
+        var route = Route({
+            route(_route) {
+                _route.entry = undefined;
+                _route.subscribe((...entry) => {
+                    _route.entry = entry;
+                });
+            },
+            wrap(_route, route) {
+                route.entry = () => {
+                    return _route.entry;
+                }
+            }
+        });
+
+        route.push('Test');
+
+        expect(route.entry()[1]).to.equal('Test');
+    });
+
 });
