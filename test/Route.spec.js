@@ -10,9 +10,9 @@ describe('Route', () => {
     });
 
     it('should know its key', () => {
-        var child = route('/test/key/values');
-
-        expect(child.key()).to.equal('/test/key/values');
+        expect(route('/').key()).to.equal('/');
+        expect(route('/child').key()).to.equal('/child');
+        expect(route('/test/key/values').key()).to.equal('/test/key/values');
     });
 
     it('should handle root', done => {
@@ -24,6 +24,16 @@ describe('Route', () => {
 
         route('/notroot').push('Doh!');
         route('/').push('Hi!');
+    });
+
+    it('should handle immediate child', done => {
+        route('/child').subscribe((key, value) => {
+            expect(key).to.equal('/child');
+            expect(value).to.equal('Yay!');
+            done();
+        });
+
+        route('/child').push('Yay!');
     });
 
     it('should handle static', done => {
@@ -68,8 +78,8 @@ describe('Route', () => {
                     route.entry = entry;
                 });
             },
-            makePublic(target, route) {
-                target.entry = () => route.entry;
+            wrap(wrapper, route) {
+                wrapper.entry = () => route.entry;
             }
         });
 

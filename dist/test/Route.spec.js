@@ -13,9 +13,9 @@ describe('Route', function () {
     });
 
     it('should know its key', function () {
-        var child = route('/test/key/values');
-
-        (0, _chai.expect)(child.key()).to.equal('/test/key/values');
+        (0, _chai.expect)(route('/').key()).to.equal('/');
+        (0, _chai.expect)(route('/child').key()).to.equal('/child');
+        (0, _chai.expect)(route('/test/key/values').key()).to.equal('/test/key/values');
     });
 
     it('should handle root', function (done) {
@@ -27,6 +27,16 @@ describe('Route', function () {
 
         route('/notroot').push('Doh!');
         route('/').push('Hi!');
+    });
+
+    it('should handle immediate child', function (done) {
+        route('/child').subscribe(function (key, value) {
+            (0, _chai.expect)(key).to.equal('/child');
+            (0, _chai.expect)(value).to.equal('Yay!');
+            done();
+        });
+
+        route('/child').push('Yay!');
     });
 
     it('should handle static', function (done) {
@@ -75,8 +85,8 @@ describe('Route', function () {
                     _route.entry = entry;
                 });
             },
-            makePublic: function makePublic(target, route) {
-                target.entry = function () {
+            wrap: function wrap(wrapper, route) {
+                wrapper.entry = function () {
                     return route.entry;
                 };
             }

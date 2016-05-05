@@ -80,29 +80,29 @@ function _Route(key, parent, options) {
     }
 }
 
-function makePublic(route) {
+function wrap(route) {
     var key = route.key;
     var push = route.push;
     var subscribe = route.subscribe;
 
 
-    var target = Object.assign(function (key) {
-        return makePublic(route.child(_Key2.default.parse(key)));
+    var wrapper = Object.assign(function (key) {
+        return wrap(route.child(_Key2.default.parse(key)));
     }, {
         key: key,
         push: push,
         subscribe: subscribe
     });
 
-    if (route.options.makePublic) {
-        route.options.makePublic(target, route);
+    if (route.options.wrap) {
+        route.options.wrap(wrapper, route);
     }
 
-    return target;
+    return wrapper;
 }
 
 function Route(options) {
-    return makePublic(new _Route(undefined, undefined, options));
+    return wrap(new _Route(undefined, undefined, options));
 }
 
 exports.default = Route;
