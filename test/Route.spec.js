@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {Route} from '../lib/Route';
+import {Route} from '../lib/index';
 
 describe('Route', () => {
 

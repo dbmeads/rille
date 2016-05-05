@@ -2,14 +2,14 @@
 
 var _chai = require('chai');
 
-var _Route = require('../lib/Route');
+var _index = require('../lib/index');
 
 describe('Route', function () {
 
     var route;
 
     beforeEach(function () {
-        route = (0, _Route.Route)();
+        route = (0, _index.Route)();
     });
 
     it('should know its key', function () {
@@ -64,7 +64,7 @@ describe('Route', function () {
     });
 
     it('should support plugins', function () {
-        var route = (0, _Route.Route)({
+        var route = (0, _index.Route)({
             route: function route(_route) {
                 _route.entry = undefined;
                 _route.subscribe(function () {
