@@ -96,4 +96,13 @@ describe('Route', function () {
 
         (0, _chai.expect)(route.entry()[1]).to.equal('Test');
     });
+
+    it('should support JSON dump', function () {
+        route('/one/path');
+        route('/another/path');
+        route('/*/test');
+
+        (0, _chai.expect)(JSON.parse(route.toJSON())).to.not.throw;
+        (0, _chai.expect)(route.toJSON().indexOf('another')).to.be.above(0);
+    });
 });

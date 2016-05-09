@@ -72,6 +72,25 @@ function _Route(key, parent, options) {
         },
         key: function key() {
             return _Key2.default.stringify(route.keys);
+        },
+        raw: function raw() {
+            var obj = {
+                key: key,
+                children: {}
+            };
+
+            Object.keys(route.children).forEach(function (key) {
+                obj.children[key] = route.children[key].raw();
+            });
+
+            if (route['*']) {
+                obj['*'] = route['*'].raw();
+            }
+
+            return obj;
+        },
+        toJSON: function toJSON() {
+            return JSON.stringify(route.raw());
         }
     });
 
@@ -84,6 +103,7 @@ function wrap(route) {
     var key = route.key;
     var push = route.push;
     var subscribe = route.subscribe;
+    var toJSON = route.toJSON;
 
 
     var wrapper = Object.assign(function (key) {
@@ -91,7 +111,8 @@ function wrap(route) {
     }, {
         key: key,
         push: push,
-        subscribe: subscribe
+        subscribe: subscribe,
+        toJSON: toJSON
     });
 
     if (route.options.wrap) {

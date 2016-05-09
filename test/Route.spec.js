@@ -88,4 +88,13 @@ describe('Route', () => {
         expect(route.entry()[1]).to.equal('Test');
     });
 
+    it('should support JSON dump', () => {
+        route('/one/path');
+        route('/another/path');
+        route('/*/test');
+
+        expect(JSON.parse(route.toJSON())).to.not.throw;
+        expect(route.toJSON().indexOf('another')).to.be.above(0);
+    });
+
 });
