@@ -61,7 +61,9 @@ function _Route(key, parent, options) {
                 entry[_key] = arguments[_key];
             }
 
-            route.root().propagate(route.keys, [_Key2.default.stringify(route.keys)].concat(entry));
+            route.root().propagate(keys.map(function (v) {
+                return v;
+            }), [_Key2.default.stringify(keys)].concat(entry));
         },
         subscribe: function subscribe(cb) {
             var subs = route.subs;
@@ -71,7 +73,7 @@ function _Route(key, parent, options) {
             };
         },
         key: function key() {
-            return _Key2.default.stringify(route.keys);
+            return _Key2.default.stringify(keys);
         },
         raw: function raw() {
             var obj = {
