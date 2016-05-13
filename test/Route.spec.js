@@ -97,4 +97,16 @@ describe('Route', () => {
         expect(route.toJSON().indexOf('another')).to.be.above(0);
     });
 
+    it('should properly route within a route', done => {
+        var message = 'hi';
+
+        route('/lobby').subscribe((key, message) => {
+            expect(route('/lobby/1').key()).to.equal('/lobby/1');
+
+            done();
+        });
+
+        route('/lobby').push(message);
+    });
+
 });

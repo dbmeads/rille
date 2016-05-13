@@ -105,4 +105,16 @@ describe('Route', function () {
         (0, _chai.expect)(JSON.parse(route.toJSON())).to.not.throw;
         (0, _chai.expect)(route.toJSON().indexOf('another')).to.be.above(0);
     });
+
+    it('should properly route within a route', function (done) {
+        var message = 'hi';
+
+        route('/lobby').subscribe(function (key, message) {
+            (0, _chai.expect)(route('/lobby/1').key()).to.equal('/lobby/1');
+
+            done();
+        });
+
+        route('/lobby').push(message);
+    });
 });
