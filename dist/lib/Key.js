@@ -6,7 +6,6 @@ Object.defineProperty(exports, "__esModule", {
 var delimiter = '/';
 
 function parse(key) {
-    // Already parsed?
     if (Array.isArray(key)) {
         return key;
     }
