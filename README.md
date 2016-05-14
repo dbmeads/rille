@@ -23,14 +23,14 @@ TBD
 
 ## Installation
 
-1. Install rille: `npm install rille --save`
+`npm install rille --save`
 
 [Back To Top](#quick-links)
 
 ## Contributing
 
 * Build rille: `npm run build`
-* Test rille: `npm run build`
+* Test rille: `npm test`
 
 [Back To Top](#quick-links)
 
