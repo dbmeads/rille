@@ -9,104 +9,125 @@ describe('Route', () => {
         route = Route();
     });
 
-    it('should know its key', () => {
-        expect(route('/').key()).to.equal('/');
-        expect(route('/child').key()).to.equal('/child');
-        expect(route('/test/key/values').key()).to.equal('/test/key/values');
+    describe('key', () => {
+        it('should know its key', () => {
+            expect(route('/').key()).to.equal('/');
+            expect(route('/child').key()).to.equal('/child');
+            expect(route('/test/key/values').key()).to.equal('/test/key/values');
+        });
     });
 
-    it('should handle root', done => {
-        route('/').subscribe((key, value) => {
-            expect(key).to.equal('/');
-            expect(value).to.equal('Hi!');
-            done();
+    describe('route()', () => {
+        it('should handle root', done => {
+            route('/').subscribe((key, value) => {
+                expect(key).to.equal('/');
+                expect(value).to.equal('Hi!');
+                done();
+            });
+
+            route('/notroot').push('Doh!');
+            route('/').push('Hi!');
         });
 
-        route('/notroot').push('Doh!');
-        route('/').push('Hi!');
-    });
+        it('should handle immediate child', done => {
+            route('/child').subscribe((key, value) => {
+                expect(key).to.equal('/child');
+                expect(value).to.equal('Yay!');
+                done();
+            });
 
-    it('should handle immediate child', done => {
-        route('/child').subscribe((key, value) => {
-            expect(key).to.equal('/child');
-            expect(value).to.equal('Yay!');
-            done();
+            route('/child').push('Yay!');
         });
 
-        route('/child').push('Yay!');
-    });
+        it('should handle static', done => {
+            route('/users/1').subscribe((key, value) => {
+                expect(key).to.equal('/users/1');
+                expect(value).to.equal('bar');
+                done();
+            });
 
-    it('should handle static', done => {
-        route('/users/1').subscribe((key, value) => {
-            expect(key).to.equal('/users/1');
-            expect(value).to.equal('bar');
-            done();
+            route('/').push('foo');
+            route('/users/1').push('bar');
         });
 
-        route('/').push('foo');
-        route('/users/1').push('bar');
-    });
+        it('should handle wildcard', done => {
+            route('/users/*').subscribe((key, value) => {
+                expect(key).to.equal('/users/1');
+                expect(value).to.equal('bar');
+                done();
+            });
 
-    it('should handle wildcard', done => {
-        route('/users/*').subscribe((key, value) => {
-            expect(key).to.equal('/users/1');
-            expect(value).to.equal('bar');
-            done();
+            route('/').push('foo');
+            route('/users/1').push('bar');
         });
 
-        route('/').push('foo');
-        route('/users/1').push('bar');
-    });
+        it('should support relative pushes', done => {
+            var child = route('/i/am/a/child');
 
-    it('should support relative pushes', done => {
-        var child = route('/i/am/a/child');
+            route('/i/am/a/child/*').subscribe((key, value) => {
+                expect(key).to.equal('/i/am/a/child/too');
+                expect(value).to.equal('Yay!');
+                done();
+            });
 
-        route('/i/am/a/child/*').subscribe((key, value) => {
-            expect(key).to.equal('/i/am/a/child/too');
-            expect(value).to.equal('Yay!');
-            done();
+            child('/too').push('Yay!');
         });
 
-        child('/too').push('Yay!');
-    });
+        it('should properly route within a route', done => {
+            var message = 'hi';
 
-    it('should support plugins', () => {
-        var route = Route({
-            route(route) {
-                route.entry = undefined;
-                route.subscribe((...entry) => {
-                    route.entry = entry;
-                });
-            },
-            wrap(wrapper, route) {
-                wrapper.entry = () => route.entry;
-            }
+            route('/lobby').subscribe((key, message) => {
+                expect(route('/lobby/1').key()).to.equal('/lobby/1');
+
+                done();
+            });
+
+            route('/lobby').push(message);
         });
-
-        route.push('Test');
-
-        expect(route.entry()[1]).to.equal('Test');
     });
 
-    it('should support JSON dump', () => {
-        route('/one/path');
-        route('/another/path');
-        route('/*/test');
+    describe('plugin', () => {
+        it('should support plugins', () => {
+            var route = Route({
+                route(route) {
+                    route.entry = undefined;
+                    route.subscribe((...entry) => {
+                        route.entry = entry;
+                    });
+                },
+                wrap(wrapper, route) {
+                    wrapper.entry = () => route.entry;
+                }
+            });
 
-        expect(JSON.parse(route.toJSON())).to.not.throw;
-        expect(route.toJSON().indexOf('another')).to.be.above(0);
-    });
+            route.push('Test');
 
-    it('should properly route within a route', done => {
-        var message = 'hi';
-
-        route('/lobby').subscribe((key, message) => {
-            expect(route('/lobby/1').key()).to.equal('/lobby/1');
-
-            done();
+            expect(route.entry()[1]).to.equal('Test');
         });
+    });
 
-        route('/lobby').push(message);
+    describe('toJSON', () => {
+        it('should support JSON dump', () => {
+            route('/one/path');
+            route('/another/path');
+            route('/*/test');
+
+            expect(JSON.parse(route.toJSON())).to.not.throw;
+            expect(route.toJSON().indexOf('another')).to.be.above(0);
+        });
+    });
+
+    describe('childKeys', () => {
+        it('should expose child keys', () => {
+            route('/users/1');
+            route('/users/2');
+
+            var keys = route('/users').childKeys();
+
+            expect(keys.length).to.equal(2);
+            expect(keys.indexOf('1')).to.be.above(-1);
+            expect(keys.indexOf('2')).to.be.above(-1);
+        });
     });
 
 });

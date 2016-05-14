@@ -12,109 +12,130 @@ describe('Route', function () {
         route = (0, _index.Route)();
     });
 
-    it('should know its key', function () {
-        (0, _chai.expect)(route('/').key()).to.equal('/');
-        (0, _chai.expect)(route('/child').key()).to.equal('/child');
-        (0, _chai.expect)(route('/test/key/values').key()).to.equal('/test/key/values');
+    describe('key', function () {
+        it('should know its key', function () {
+            (0, _chai.expect)(route('/').key()).to.equal('/');
+            (0, _chai.expect)(route('/child').key()).to.equal('/child');
+            (0, _chai.expect)(route('/test/key/values').key()).to.equal('/test/key/values');
+        });
     });
 
-    it('should handle root', function (done) {
-        route('/').subscribe(function (key, value) {
-            (0, _chai.expect)(key).to.equal('/');
-            (0, _chai.expect)(value).to.equal('Hi!');
-            done();
+    describe('route()', function () {
+        it('should handle root', function (done) {
+            route('/').subscribe(function (key, value) {
+                (0, _chai.expect)(key).to.equal('/');
+                (0, _chai.expect)(value).to.equal('Hi!');
+                done();
+            });
+
+            route('/notroot').push('Doh!');
+            route('/').push('Hi!');
         });
 
-        route('/notroot').push('Doh!');
-        route('/').push('Hi!');
-    });
+        it('should handle immediate child', function (done) {
+            route('/child').subscribe(function (key, value) {
+                (0, _chai.expect)(key).to.equal('/child');
+                (0, _chai.expect)(value).to.equal('Yay!');
+                done();
+            });
 
-    it('should handle immediate child', function (done) {
-        route('/child').subscribe(function (key, value) {
-            (0, _chai.expect)(key).to.equal('/child');
-            (0, _chai.expect)(value).to.equal('Yay!');
-            done();
+            route('/child').push('Yay!');
         });
 
-        route('/child').push('Yay!');
-    });
+        it('should handle static', function (done) {
+            route('/users/1').subscribe(function (key, value) {
+                (0, _chai.expect)(key).to.equal('/users/1');
+                (0, _chai.expect)(value).to.equal('bar');
+                done();
+            });
 
-    it('should handle static', function (done) {
-        route('/users/1').subscribe(function (key, value) {
-            (0, _chai.expect)(key).to.equal('/users/1');
-            (0, _chai.expect)(value).to.equal('bar');
-            done();
+            route('/').push('foo');
+            route('/users/1').push('bar');
         });
 
-        route('/').push('foo');
-        route('/users/1').push('bar');
-    });
+        it('should handle wildcard', function (done) {
+            route('/users/*').subscribe(function (key, value) {
+                (0, _chai.expect)(key).to.equal('/users/1');
+                (0, _chai.expect)(value).to.equal('bar');
+                done();
+            });
 
-    it('should handle wildcard', function (done) {
-        route('/users/*').subscribe(function (key, value) {
-            (0, _chai.expect)(key).to.equal('/users/1');
-            (0, _chai.expect)(value).to.equal('bar');
-            done();
+            route('/').push('foo');
+            route('/users/1').push('bar');
         });
 
-        route('/').push('foo');
-        route('/users/1').push('bar');
-    });
+        it('should support relative pushes', function (done) {
+            var child = route('/i/am/a/child');
 
-    it('should support relative pushes', function (done) {
-        var child = route('/i/am/a/child');
+            route('/i/am/a/child/*').subscribe(function (key, value) {
+                (0, _chai.expect)(key).to.equal('/i/am/a/child/too');
+                (0, _chai.expect)(value).to.equal('Yay!');
+                done();
+            });
 
-        route('/i/am/a/child/*').subscribe(function (key, value) {
-            (0, _chai.expect)(key).to.equal('/i/am/a/child/too');
-            (0, _chai.expect)(value).to.equal('Yay!');
-            done();
+            child('/too').push('Yay!');
         });
 
-        child('/too').push('Yay!');
-    });
+        it('should properly route within a route', function (done) {
+            var message = 'hi';
 
-    it('should support plugins', function () {
-        var route = (0, _index.Route)({
-            route: function route(_route) {
-                _route.entry = undefined;
-                _route.subscribe(function () {
-                    for (var _len = arguments.length, entry = Array(_len), _key = 0; _key < _len; _key++) {
-                        entry[_key] = arguments[_key];
-                    }
+            route('/lobby').subscribe(function (key, message) {
+                (0, _chai.expect)(route('/lobby/1').key()).to.equal('/lobby/1');
 
-                    _route.entry = entry;
-                });
-            },
-            wrap: function wrap(wrapper, route) {
-                wrapper.entry = function () {
-                    return route.entry;
-                };
-            }
+                done();
+            });
+
+            route('/lobby').push(message);
         });
-
-        route.push('Test');
-
-        (0, _chai.expect)(route.entry()[1]).to.equal('Test');
     });
 
-    it('should support JSON dump', function () {
-        route('/one/path');
-        route('/another/path');
-        route('/*/test');
+    describe('plugin', function () {
+        it('should support plugins', function () {
+            var route = (0, _index.Route)({
+                route: function route(_route) {
+                    _route.entry = undefined;
+                    _route.subscribe(function () {
+                        for (var _len = arguments.length, entry = Array(_len), _key = 0; _key < _len; _key++) {
+                            entry[_key] = arguments[_key];
+                        }
 
-        (0, _chai.expect)(JSON.parse(route.toJSON())).to.not.throw;
-        (0, _chai.expect)(route.toJSON().indexOf('another')).to.be.above(0);
-    });
+                        _route.entry = entry;
+                    });
+                },
+                wrap: function wrap(wrapper, route) {
+                    wrapper.entry = function () {
+                        return route.entry;
+                    };
+                }
+            });
 
-    it('should properly route within a route', function (done) {
-        var message = 'hi';
+            route.push('Test');
 
-        route('/lobby').subscribe(function (key, message) {
-            (0, _chai.expect)(route('/lobby/1').key()).to.equal('/lobby/1');
-
-            done();
+            (0, _chai.expect)(route.entry()[1]).to.equal('Test');
         });
+    });
 
-        route('/lobby').push(message);
+    describe('toJSON', function () {
+        it('should support JSON dump', function () {
+            route('/one/path');
+            route('/another/path');
+            route('/*/test');
+
+            (0, _chai.expect)(JSON.parse(route.toJSON())).to.not.throw;
+            (0, _chai.expect)(route.toJSON().indexOf('another')).to.be.above(0);
+        });
+    });
+
+    describe('childKeys', function () {
+        it('should expose child keys', function () {
+            route('/users/1');
+            route('/users/2');
+
+            var keys = route('/users').childKeys();
+
+            (0, _chai.expect)(keys.length).to.equal(2);
+            (0, _chai.expect)(keys.indexOf('1')).to.be.above(-1);
+            (0, _chai.expect)(keys.indexOf('2')).to.be.above(-1);
+        });
     });
 });

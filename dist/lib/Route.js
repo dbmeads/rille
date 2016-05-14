@@ -75,6 +75,9 @@ function _Route(key, parent, options) {
         key: function key() {
             return _Key2.default.stringify(keys);
         },
+        childKeys: function childKeys() {
+            return Object.keys(route.children);
+        },
         raw: function raw() {
             var obj = {
                 key: key,
@@ -102,6 +105,7 @@ function _Route(key, parent, options) {
 }
 
 function wrap(route) {
+    var childKeys = route.childKeys;
     var key = route.key;
     var push = route.push;
     var subscribe = route.subscribe;
@@ -111,6 +115,7 @@ function wrap(route) {
     var wrapper = Object.assign(function (key) {
         return wrap(route.child(_Key2.default.parse(key)));
     }, {
+        childKeys: childKeys,
         key: key,
         push: push,
         subscribe: subscribe,
