@@ -11,6 +11,7 @@
 #### Modules
 * [Key](#key)
 * [Route](#route)
+* [Store](#store)
 
 ## Examples
 
@@ -42,6 +43,14 @@ Key();
 
 ```js
 Route();
+```
+
+[Back To Top](#quick-links)
+
+## Store
+
+```js
+Store();
 ```
 
 [Back To Top](#quick-links)
