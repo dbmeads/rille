@@ -29,8 +29,8 @@ TBD
 
 ## Contributing
 
-* Build rille: `npm run build`
-* Test rille: `npm test`
+* To Build: `npm run build`
+* To Test: `npm test`
 
 [Back To Top](#quick-links)
 
