@@ -5,6 +5,8 @@
 ## Quick Links
 
 #### General
+* [Installation](#installation)
+* [Contributing](#contributing)
 * [Examples](#examples)
 * [Change Log](#change-log)
 
@@ -19,15 +21,17 @@ TBD
 
 [Back To Top](#quick-links)
 
-## Building/Testing
+## Installation
 
-```
-# Build
-$ npm run build
+1. Install rille: `npm install rille --save`
+2. Install peer dependancies: `npm install socket.io --save` `npm install socket.io-client --save`
 
-# Test
-$ npm test
-```
+[Back To Top](#quick-links)
+
+## Contributing
+
+* Build rille: `npm run build`
+* Test rille: `npm run build`
 
 [Back To Top](#quick-links)
 
