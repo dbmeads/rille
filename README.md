@@ -24,7 +24,6 @@ TBD
 ## Installation
 
 1. Install rille: `npm install rille --save`
-2. Install peer dependancies: `npm install socket.io --save` `npm install socket.io-client --save`
 
 [Back To Top](#quick-links)
 
