@@ -60,4 +60,7 @@ Store();
 
 ## Change Log
 
+#### 0.13.0
+1. Added `Entry`.
+
 [Back To Top](#quick-links)
