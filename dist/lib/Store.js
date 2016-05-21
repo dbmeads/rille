@@ -7,6 +7,8 @@ exports.Store = undefined;
 
 var _Route = require('./Route');
 
+var _Entry = require('./Entry');
+
 function Store() {
     return (0, _Route.Route)({
         route: function route(_route) {
@@ -22,6 +24,9 @@ function Store() {
         wrap: function wrap(wrapper, route) {
             wrapper.entry = function () {
                 return route.entry;
+            };
+            wrapper.data = function () {
+                return _Entry.Entry.data(route.entry);
             };
         }
     });
