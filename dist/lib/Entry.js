@@ -5,7 +5,9 @@ Object.defineProperty(exports, "__esModule", {
 });
 var Entry = {
     data: function data(entry) {
-        return entry.length > 2 ? entry.slice(1) : entry[1];
+        if (Array.isArray(entry)) {
+            return entry.length > 2 ? entry.slice(1) : entry[1];
+        }
     },
     key: function key(entry) {
         return entry[0];
