@@ -9,17 +9,17 @@ describe('Entry', () => {
         });
     });
 
-    describe('data', () => {
+    describe('values', () => {
         it('should return array of data items', () => {
-            expect(Array.isArray(Entry.data(['/key', '1', '2']))).to.be.true;
+            expect(Array.isArray(Entry.values(['/key', '1', '2']))).to.be.true;
         });
 
         it('should handle undefined', () => {
-            expect(Entry.data()).to.not.exist;
+            expect(Entry.values()).to.not.exist;
         });
 
         it('should return undefined if non array is passed', () => {
-            expect(Entry.data('hi!')).to.not.exist;
+            expect(Entry.values('hi!')).to.not.exist;
         });
     });
 });

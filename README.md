@@ -39,15 +39,15 @@ TBD
 
 ## Entry
 
-Entry provides some convenience functions for working with entries.  An entry is an array where the head is the key and the tail is data (e.g.: ['/some/key', data1, data2, ...]).
+Entry provides some convenience functions for working with entries.  An entry is an array where the head is the key and the tail contains values (e.g.: ['/some/key', value1, value2, ...]).
 
 
 ```js
 
 import {Entry} from 'rille';
 
-// Returns the array of data for an entry
-var data = Entry.data(entry);
+// Returns the array of values for an entry
+var values = Entry.values(entry);
 
 // Returns the key of an entry
 var key = Entry.key(entry);
@@ -76,7 +76,7 @@ var key = Key.stringify(['i','am','a','key']);
 
 ## Route
 
-Route is the core of Rille and provides support for routing event data to appropriate subscribers.
+Route is the core of Rille and provides support for routing entries (key + values) to appropriate subscribers.
 
 ```js
 
@@ -86,27 +86,27 @@ import {Route} from 'rille';
 const route = Route();
 
 // Subscribe to receive updates to a route
-route.subscribe((key, ...data) => {
-    console.log('My key is ' + key + ' and my data is ' + JSON.stringify(data));
+route.subscribe((key, ...values) => {
+    console.log('My key is ' + key + ' and my values are ' + JSON.stringify(values));
 });
 
 // Subscribe to receive updates on a child route
-route('/child/1').subscribe((key, ...data) => {
-    console.log('My key is ' + key + ' and my data is ' + JSON.stringify(data));
+route('/child/1').subscribe((key, ...values) => {
+    console.log('My key is ' + key + ' and my values are ' + JSON.stringify(values));
 });
 
 // Subscribe to receive updates for all child of a route (a wildcard route)
-route('/child/*').subscribe((key, ...data) => {
-    console.log('Wildcard Route: My key is ' + key + ' and my data is ' + JSON.stringify(data));
+route('/child/*').subscribe((key, ...values) => {
+    console.log('Wildcard Route: My key is ' + key + ' and my values are ' + JSON.stringify(values));
 });
                  
-// Push data to a route
+// Push a value(s) to a route
 route.push('Hi!');
 
-// Push multiple pieces and types of data to a route
+// Push value(s) of any type to a route
 route.push('Hi!', {user: 'Frank'}); 
 
-// Push data to a child route
+// Push value(s) to a child route
 route('/child/1').push('Hi child!');
 
 ```
@@ -138,18 +138,21 @@ child.push('Hello child!');
 var entry = child.entry();
 console.log('most recent entry ' + JSON.stringify(entry));
 
-// Get the array of data for the most recent entry
-var data = child.data();
-console.log('most recent data ' + JSON.stringify(data));
+// Get the array of values for the most recent entry
+var values = child.values();
+console.log('most recent values ' + JSON.stringify(values));
 
-// Get a particular data item from the most recent entry
-console.log('message is "' + child.data(0) + '".');
+// Get a particular value from the most recent entry
+console.log('message is "' + child.value(0) + '".');
 
 ```
 
 [Back To Top](#quick-links)
 
 ## Change Log
+
+#### 0.20.0
+1. `Entry.data()` is now `Entry.values()` and `store.data` is now `store.values`.
 
 #### 0.16.0
 1. `Entry.data()` always returns an array.

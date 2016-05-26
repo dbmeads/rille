@@ -25,9 +25,9 @@ function Store() {
             wrapper.entry = function () {
                 return route.entry;
             };
-            wrapper.data = function (ordinal) {
-                var data = _Entry.Entry.data(route.entry);
-                return ordinal != undefined ? data[ordinal] : data;
+            wrapper.values = function (ordinal) {
+                var values = _Entry.Entry.values(route.entry);
+                return ordinal != undefined ? values[ordinal] : values;
             };
         }
     });

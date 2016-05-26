@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-function data(entry) {
+function values(entry) {
     if (Array.isArray(entry)) {
         return entry.slice(1);
     }
@@ -14,7 +14,7 @@ function key(entry) {
 }
 
 var Entry = {
-    data: data,
+    values: values,
     key: key
 };
 
