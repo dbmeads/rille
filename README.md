@@ -35,7 +35,7 @@ TBD
 
 ## Entry
 
-Entry provides some convenience functions for working with entries.  An entry is an array where the head is the key and the tail is data (e.g.: ['/some/key', data1, data2, ...])
+Entry provides some convenience functions for working with entries.  An entry is an array where the head is the key and the tail is data (e.g.: ['/some/key', data1, data2, ...]).
 
 
 ```js
