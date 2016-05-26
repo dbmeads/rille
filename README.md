@@ -141,6 +141,9 @@ console.log('message is "' + child.data(0) + '".');
 
 ## Change Log
 
+#### 0.16.0
+1. `Entry.data()` always returns an array.
+
 #### 0.13.0
 1. Added `Entry`.
 
