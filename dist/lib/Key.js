@@ -30,7 +30,10 @@ function stringify(keys) {
     return '/';
 }
 
-var Key = { parse: parse, stringify: stringify };
+var Key = {
+    parse: parse,
+    stringify: stringify
+};
 
 exports.default = Key;
 exports.Key = Key;

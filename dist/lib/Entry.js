@@ -3,15 +3,19 @@
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-var Entry = {
-    data: function data(entry) {
-        if (Array.isArray(entry)) {
-            return entry.length > 2 ? entry.slice(1) : entry[1];
-        }
-    },
-    key: function key(entry) {
-        return entry[0];
+function data(entry) {
+    if (Array.isArray(entry)) {
+        return entry.slice(1);
     }
+}
+
+function key(entry) {
+    return entry[0];
+}
+
+var Entry = {
+    data: data,
+    key: key
 };
 
 exports.default = Entry;

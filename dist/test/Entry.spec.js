@@ -13,11 +13,7 @@ describe('Entry', function () {
     });
 
     describe('data', function () {
-        it('should return data if only one item', function () {
-            (0, _chai.expect)(_index.Entry.data(['/users/1', 'Hi!'])).to.equal('Hi!');
-        });
-
-        it('should return array if multiple data items', function () {
+        it('should return array of data items', function () {
             (0, _chai.expect)(Array.isArray(_index.Entry.data(['/key', '1', '2']))).to.be.true;
         });
 
