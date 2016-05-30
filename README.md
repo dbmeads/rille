@@ -1,6 +1,6 @@
 # [Rille](http://www.rille.io) [![Build Status](https://img.shields.io/travis/dbmeads/rille/master.svg?style=flat-square)](https://travis-ci.org/dbmeads/rille) [![Coverage Status](https://img.shields.io/coveralls/dbmeads/rille/master.svg?style=flat-square)](https://coveralls.io/github/dbmeads/rille?branch=master) [![npm version](https://img.shields.io/npm/v/rille.svg?style=flat-square)](https://www.npmjs.com/package/rille) [![npm downloads](https://img.shields.io/npm/dm/rille.svg?style=flat-square)](https://www.npmjs.com/package/rille) [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](CONTRIBUTING.md#pull-requests)
 
-Think of Rille as a key-value store and router for your application state.  
+Think of Rille as a key-value store and router for your application state.  You could also think of it as a message broker / data pipeline for your application state.  
 
 Consuming portions of your application can subscribe to well known routes and simply wait for data to be pushed to them while producing portions of your application can push data without worrying about who is consuming data on the other end.
 
@@ -143,7 +143,7 @@ var values = child.values();
 console.log('most recent values ' + JSON.stringify(values));
 
 // Get a particular value from the most recent entry
-console.log('message is "' + child.value(0) + '".');
+console.log('message is "' + child.values(0) + '".');
 
 ```
 
