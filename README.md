@@ -151,6 +151,8 @@ console.log('message is "' + child.values(0) + '".');
 
 ## Change Log
 
+#### 0.21.0
+1. `push` now returns the route for chaining.
 #### 0.20.0
 1. `Entry.data()` is now `Entry.values()` and `store.data` is now `store.values`.
 

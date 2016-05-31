@@ -64,6 +64,7 @@ function _Route(key, parent, options) {
             route.root().propagate(keys.map(function (v) {
                 return v;
             }), [_Key2.default.stringify(keys)].concat(entry));
+            return route;
         },
         subscribe: function subscribe(cb) {
             var subs = route.subs;
