@@ -18,11 +18,17 @@ describe('Entry', function () {
         });
 
         it('should handle undefined', function () {
-            (0, _chai.expect)(_index.Entry.values()).to.not.exist;
+            var values = _index.Entry.values();
+
+            (0, _chai.expect)(Array.isArray(values)).to.be.true;
+            (0, _chai.expect)(values.length).to.equal(0);
         });
 
-        it('should return undefined if non array is passed', function () {
-            (0, _chai.expect)(_index.Entry.values('hi!')).to.not.exist;
+        it('should return empty array if non array is passed', function () {
+            var values = _index.Entry.values('Hi!');
+
+            (0, _chai.expect)(Array.isArray(values)).to.be.true;
+            (0, _chai.expect)(values.length).to.equal(0);
         });
     });
 });

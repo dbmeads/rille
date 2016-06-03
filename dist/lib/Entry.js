@@ -7,6 +7,7 @@ function values(entry) {
     if (Array.isArray(entry)) {
         return entry.slice(1);
     }
+    return [];
 }
 
 function key(entry) {

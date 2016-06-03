@@ -130,4 +130,49 @@ describe('Route', () => {
         });
     });
 
+    describe('functionTree', () => {
+        it('should generate function tree', done => {
+            route('/a');
+            route('/test/1');
+            route('/test/2');
+
+            var push = route.functionTree('push');
+            var subscribe = route.functionTree('subscribe');
+
+            expect(push.a).to.exist;
+            expect(push.test['1']).to.exist;
+            expect(push.test['2']).to.exist;
+
+            subscribe.a((key, ...values) => {
+                expect(key).to.equal('/a');
+                expect(values[0]).to.equal('hi!');
+                done();
+            });
+
+            push.a('hi!');
+        });
+    });
+
+    describe('functionTrees', () => {
+        it('should generate function trees', done => {
+            route('/a');
+            route('/test/1');
+            route('/test/2');
+
+            var {push, subscribe} = route.functionTrees('push', 'subscribe');
+
+            expect(push.a).to.exist;
+            expect(push.test['1']).to.exist;
+            expect(push.test['2']).to.exist;
+
+            subscribe.a((key, ...values) => {
+                expect(key).to.equal('/a');
+                expect(values[0]).to.equal('hi!');
+                done();
+            });
+
+            push.a('hi!');
+        });
+    });
+
 });

@@ -138,4 +138,53 @@ describe('Route', function () {
             (0, _chai.expect)(keys.indexOf('2')).to.be.above(-1);
         });
     });
+
+    describe('functionTree', function () {
+        it('should generate function tree', function (done) {
+            route('/a');
+            route('/test/1');
+            route('/test/2');
+
+            var push = route.functionTree('push');
+            var subscribe = route.functionTree('subscribe');
+
+            (0, _chai.expect)(push.a).to.exist;
+            (0, _chai.expect)(push.test['1']).to.exist;
+            (0, _chai.expect)(push.test['2']).to.exist;
+
+            subscribe.a(function (key) {
+                (0, _chai.expect)(key).to.equal('/a');
+                (0, _chai.expect)(arguments.length <= 1 ? undefined : arguments[1]).to.equal('hi!');
+                done();
+            });
+
+            push.a('hi!');
+        });
+    });
+
+    describe('functionTrees', function () {
+        it('should generate function trees', function (done) {
+            route('/a');
+            route('/test/1');
+            route('/test/2');
+
+            var _route$functionTrees = route.functionTrees('push', 'subscribe');
+
+            var push = _route$functionTrees.push;
+            var subscribe = _route$functionTrees.subscribe;
+
+
+            (0, _chai.expect)(push.a).to.exist;
+            (0, _chai.expect)(push.test['1']).to.exist;
+            (0, _chai.expect)(push.test['2']).to.exist;
+
+            subscribe.a(function (key) {
+                (0, _chai.expect)(key).to.equal('/a');
+                (0, _chai.expect)(arguments.length <= 1 ? undefined : arguments[1]).to.equal('hi!');
+                done();
+            });
+
+            push.a('hi!');
+        });
+    });
 });

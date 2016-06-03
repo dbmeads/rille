@@ -25,6 +25,24 @@ function _Route(key, parent, options) {
         keys.push(key);
     }
 
+    function _functionTree(route, func) {
+        var tree = function tree() {
+            for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+                args[_key] = arguments[_key];
+            }
+
+            if (route[func]) {
+                return route[func].apply(null, args);
+            }
+        };
+
+        Object.keys(route.children).forEach(function (key) {
+            return tree[key] = _functionTree(route.children[key], func);
+        });
+
+        return tree;
+    }
+
     Object.assign(route, {
         options: options,
         parent: parent,
@@ -33,6 +51,21 @@ function _Route(key, parent, options) {
         subs: new Set(),
         ensureGen: function ensureGen(obj, key) {
             return obj[key] ? obj[key] : obj[key] = new _Route(key, route);
+        },
+        functionTree: function functionTree(func) {
+            return _functionTree(route, func);
+        },
+        functionTrees: function functionTrees() {
+            var obj = {};
+
+            for (var _len2 = arguments.length, funcs = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
+                funcs[_key2] = arguments[_key2];
+            }
+
+            funcs.forEach(function (func) {
+                return obj[func] = _functionTree(route, func);
+            });
+            return obj;
         },
         nextGen: function nextGen(key) {
             return key === '*' ? route.ensureGen(route, key) : route.ensureGen(route.children, key);
@@ -57,8 +90,8 @@ function _Route(key, parent, options) {
             return route.parent ? route.parent.root() : route;
         },
         push: function push() {
-            for (var _len = arguments.length, entry = Array(_len), _key = 0; _key < _len; _key++) {
-                entry[_key] = arguments[_key];
+            for (var _len3 = arguments.length, entry = Array(_len3), _key3 = 0; _key3 < _len3; _key3++) {
+                entry[_key3] = arguments[_key3];
             }
 
             route.root().propagate(keys.map(function (v) {
@@ -107,6 +140,8 @@ function _Route(key, parent, options) {
 
 function wrap(route) {
     var childKeys = route.childKeys;
+    var functionTree = route.functionTree;
+    var functionTrees = route.functionTrees;
     var key = route.key;
     var push = route.push;
     var subscribe = route.subscribe;
@@ -117,6 +152,8 @@ function wrap(route) {
         return wrap(route.child(_Key2.default.parse(key)));
     }, {
         childKeys: childKeys,
+        functionTree: functionTree,
+        functionTrees: functionTrees,
         key: key,
         push: push,
         subscribe: subscribe,

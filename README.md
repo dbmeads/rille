@@ -111,6 +111,33 @@ route('/child/1').push('Hi child!');
 
 ```
 
+### Function Tree(s)
+
+Sometimes it's nice to be able to work with functions on child routes in an explicit way.  The `functionTree` and `functionTrees` functions make this easy by creating specific function trees for previously declared child routes.
+
+```js
+
+// given a route object with '/a/b/c' being previously declared (e.g.: route('/a/b/c');)
+
+// then define a push tree and an subscribe tree
+var push = route.functionTree('push');
+var subscribe = route.functionTree('subscribe');
+
+.....
+
+// alternatively, define both trees with one call
+var {push, subscribe} = route.functionTrees('push', 'subscribe');
+
+// then call subscribe on children explicitly
+subscribe.a.b.c((key, message) => {
+    console.log('Message is ' + message);
+});
+
+// and call push on children explicitly
+push.a.b.c('Hi!');
+
+```
+
 [Back To Top](#quick-links)
 
 ## Store
@@ -151,8 +178,14 @@ console.log('message is "' + child.values(0) + '".');
 
 ## Change Log
 
+#### 0.23.0
+1. Add `functionTree` to `Route` objects.
+2. Add `functionTrees` to `Route` objects.
+3. `Entry.values` and `Store.values` should always return an array.
+
 #### 0.21.0
 1. `push` now returns the route for chaining.
+
 #### 0.20.0
 1. `Entry.data()` is now `Entry.values()` and `store.data` is now `store.values`.
 

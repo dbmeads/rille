@@ -26,6 +26,10 @@ describe('Store', function () {
         (0, _chai.expect)(store('/path/1').values()[2]).to.equal(3);
     });
 
+    it('should return an empty array when no value exists', function () {
+        (0, _chai.expect)(Array.isArray(store.values())).to.be.true;
+    });
+
     it('should return requested value', function () {
         store.push(1, 2, 3);
 

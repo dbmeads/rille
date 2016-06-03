@@ -15,11 +15,17 @@ describe('Entry', () => {
         });
 
         it('should handle undefined', () => {
-            expect(Entry.values()).to.not.exist;
+            var values = Entry.values();
+
+            expect(Array.isArray(values)).to.be.true;
+            expect(values.length).to.equal(0);
         });
 
-        it('should return undefined if non array is passed', () => {
-            expect(Entry.values('hi!')).to.not.exist;
+        it('should return empty array if non array is passed', () => {
+            var values = Entry.values('Hi!');
+
+            expect(Array.isArray(values)).to.be.true;
+            expect(values.length).to.equal(0);
         });
     });
 });

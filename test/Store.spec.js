@@ -23,6 +23,10 @@ describe('Store', () => {
         expect(store('/path/1').values()[2]).to.equal(3);
     });
 
+    it('should return an empty array when no value exists', () => {
+        expect(Array.isArray(store.values())).to.be.true;
+    });
+
     it('should return requested value', () => {
         store.push(1,2,3);
 
