@@ -9,8 +9,19 @@ describe('Key', () => {
             expect(Key.parse('/lobby/1')).to.eql(['lobby', '1']);
         });
 
-        it('should parsed input', () => {
+        it('should handle parsed input', () => {
             expect(Key.parse(['child'])).to.eql(['child']);
+        });
+
+        it('should return specific path fragments when requested', () => {
+            var [a, b] = Key.parse('/i/am/a/key', [0, 3]);
+
+            expect(a).to.equal('i');
+            expect(b).to.equal('key');
+        });
+
+        it('should throw proper exception if requested fragment is out of range', () => {
+            expect(() => Key.parse('/i/am/a/key', [0, 4])).to.throw;
         });
     });
 

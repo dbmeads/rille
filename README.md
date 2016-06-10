@@ -67,6 +67,9 @@ import {Key} from 'rille';
 // Converts string format into array format
 var keys = Key.parse('/i/am/a/key');
 
+// Return only specific key fragments (useful for parameter extraction)
+var [id] = Key.parse('/users/123243/', [1]);  // Will set id = 123243
+
 // Converts array format into string format
 var key = Key.stringify(['i','am','a','key']);
 
@@ -150,6 +153,9 @@ console.log('message is "' + child.values(0) + '".');
 [Back To Top](#quick-links)
 
 ## Change Log
+
+#### 0.25.0
+1. `Key.parse` now supports parameter extraction.
 
 #### 0.23.0
 1. Add `functionTree` to `Route` objects.
