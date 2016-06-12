@@ -187,4 +187,31 @@ describe('Route', function () {
             push.a('hi!');
         });
     });
+
+    describe('middleware', function () {
+        it('should be able to manipulate entries', function (done) {
+            var route = (0, _index.Route)({
+                middleware: {
+                    '/users/*': [function () {
+                        for (var _len2 = arguments.length, entry = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
+                            entry[_key2] = arguments[_key2];
+                        }
+
+                        entry.push('hi!');
+                        return entry;
+                    }]
+                }
+            });
+
+            route('/users/1').subscribe(function (key) {
+                (0, _chai.expect)(key).to.equal('/users/1');
+                (0, _chai.expect)(arguments.length <= 1 ? undefined : arguments[1]).to.equal('test');
+                (0, _chai.expect)(arguments.length <= 2 ? undefined : arguments[2]).to.equal('hi!');
+
+                done();
+            });
+
+            route('/users/1').push('test');
+        });
+    });
 });

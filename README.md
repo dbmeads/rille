@@ -154,6 +154,9 @@ console.log('message is "' + child.values(0) + '".');
 
 ## Change Log
 
+#### 0.26.0
+1. Added early `middleware` implementation.
+
 #### 0.25.0
 1. `Key.parse` now supports parameter extraction.
 

@@ -9,8 +9,8 @@ var _Route = require('./Route');
 
 var _Entry = require('./Entry');
 
-function Store() {
-    return (0, _Route.Route)({
+function Store(options) {
+    return (0, _Route.Route)(Object.assign({
         route: function route(_route) {
             _route.entry = undefined;
             _route.subscribe(function () {
@@ -30,7 +30,7 @@ function Store() {
                 return ordinal != undefined ? values[ordinal] : values;
             };
         }
-    });
+    }, options));
 }
 
 exports.default = Store;

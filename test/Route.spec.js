@@ -175,4 +175,29 @@ describe('Route', () => {
         });
     });
 
+    describe('middleware', () => {
+        it('should be able to manipulate entries', done => {
+            var route = Route({
+                middleware: {
+                    '/users/*': [
+                        (...entry) => {
+                            entry.push('hi!');
+                            return entry;
+                        }
+                    ]
+                }
+            });
+
+            route('/users/1').subscribe((key, ...values) => {
+                expect(key).to.equal('/users/1');
+                expect(values[0]).to.equal('test');
+                expect(values[1]).to.equal('hi!');
+
+                done();
+            });
+
+            route('/users/1').push('test');
+        });
+    });
+
 });

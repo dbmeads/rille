@@ -43,6 +43,42 @@ function _Route(key, parent, options) {
         return tree;
     }
 
+    function middleware(keys) {
+        var cur = options.middleware || {};
+        var _iteratorNormalCompletion = true;
+        var _didIteratorError = false;
+        var _iteratorError = undefined;
+
+        try {
+            for (var _iterator = keys[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+                var _key2 = _step.value;
+
+                if (cur[_key2]) {
+                    cur = cur[_key2];
+                } else if (cur['*']) {
+                    cur = cur['*'];
+                } else {
+                    return [];
+                }
+            }
+        } catch (err) {
+            _didIteratorError = true;
+            _iteratorError = err;
+        } finally {
+            try {
+                if (!_iteratorNormalCompletion && _iterator.return) {
+                    _iterator.return();
+                }
+            } finally {
+                if (_didIteratorError) {
+                    throw _iteratorError;
+                }
+            }
+        }
+
+        return cur._middleware || [];
+    }
+
     Object.assign(route, {
         options: options,
         parent: parent,
@@ -58,8 +94,8 @@ function _Route(key, parent, options) {
         functionTrees: function functionTrees() {
             var obj = {};
 
-            for (var _len2 = arguments.length, funcs = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
-                funcs[_key2] = arguments[_key2];
+            for (var _len2 = arguments.length, funcs = Array(_len2), _key3 = 0; _key3 < _len2; _key3++) {
+                funcs[_key3] = arguments[_key3];
             }
 
             funcs.forEach(function (func) {
@@ -90,13 +126,19 @@ function _Route(key, parent, options) {
             return route.parent ? route.parent.root() : route;
         },
         push: function push() {
-            for (var _len3 = arguments.length, entry = Array(_len3), _key3 = 0; _key3 < _len3; _key3++) {
-                entry[_key3] = arguments[_key3];
+            for (var _len3 = arguments.length, entry = Array(_len3), _key4 = 0; _key4 < _len3; _key4++) {
+                entry[_key4] = arguments[_key4];
             }
 
-            route.root().propagate(keys.map(function (v) {
-                return v;
-            }), [_Key2.default.stringify(keys)].concat(entry));
+            var funcs = middleware(keys);
+            for (var i = 0; entry && i < funcs.length; i++) {
+                entry = funcs[i].apply(funcs, _toConsumableArray(entry));
+            }
+            if (entry) {
+                route.root().propagate(keys.map(function (v) {
+                    return v;
+                }), [_Key2.default.stringify(keys)].concat(entry));
+            }
             return route;
         },
         subscribe: function subscribe(cb) {
@@ -138,6 +180,27 @@ function _Route(key, parent, options) {
     }
 }
 
+function calcMiddleware(map) {
+    var middleware = {};
+
+    var _loop = function _loop(key) {
+        var cur = middleware;
+        var keys = _Key2.default.parse(key);
+        keys.forEach(function (key) {
+            if (!cur[key]) {
+                cur[key] = {};
+            }
+            cur = cur[key];
+        });
+        cur._middleware = map[key];
+    };
+
+    for (var key in map) {
+        _loop(key);
+    }
+    return middleware;
+}
+
 function wrap(route) {
     var childKeys = route.childKeys;
     var functionTree = route.functionTree;
@@ -168,6 +231,8 @@ function wrap(route) {
 }
 
 function Route(options) {
+    options = Object.assign({}, options);
+    options.middleware = calcMiddleware(options.middleware);
     return wrap(new _Route(undefined, undefined, options));
 }
 
