@@ -126,10 +126,11 @@ function _Route(key, parent, options) {
             return route.parent ? route.parent.root() : route;
         },
         push: function push() {
-            for (var _len3 = arguments.length, entry = Array(_len3), _key4 = 0; _key4 < _len3; _key4++) {
-                entry[_key4] = arguments[_key4];
+            for (var _len3 = arguments.length, values = Array(_len3), _key4 = 0; _key4 < _len3; _key4++) {
+                values[_key4] = arguments[_key4];
             }
 
+            var entry = [_Key2.default.stringify(keys)].concat(values);
             var funcs = middleware(keys);
             for (var i = 0; entry && i < funcs.length; i++) {
                 entry = funcs[i].apply(funcs, _toConsumableArray(entry));
@@ -137,7 +138,7 @@ function _Route(key, parent, options) {
             if (entry) {
                 route.root().propagate(keys.map(function (v) {
                     return v;
-                }), [_Key2.default.stringify(keys)].concat(entry));
+                }), entry);
             }
             return route;
         },
