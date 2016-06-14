@@ -136,9 +136,7 @@ function _Route(key, parent, options) {
                 entry = funcs[i].apply(funcs, _toConsumableArray(entry));
             }
             if (entry) {
-                route.root().propagate(keys.map(function (v) {
-                    return v;
-                }), entry);
+                route.root().propagate(_Key2.default.parse(entry[0]), entry);
             }
             return route;
         },

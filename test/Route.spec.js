@@ -182,16 +182,15 @@ describe('Route', () => {
                     '/users/*': [
                         (...entry) => {
                             entry.push('hi!');
-                            return entry;
+                            return ['/test', 'hi!'];
                         }
                     ]
                 }
             });
 
-            route('/users/1').subscribe((key, ...values) => {
-                expect(key).to.equal('/users/1');
-                expect(values[0]).to.equal('test');
-                expect(values[1]).to.equal('hi!');
+            route('/test').subscribe((key, ...values) => {
+                expect(key).to.equal('/test');
+                expect(values[0]).to.equal('hi!');
 
                 done();
             });

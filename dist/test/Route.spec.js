@@ -198,15 +198,14 @@ describe('Route', function () {
                         }
 
                         entry.push('hi!');
-                        return entry;
+                        return ['/test', 'hi!'];
                     }]
                 }
             });
 
-            route('/users/1').subscribe(function (key) {
-                (0, _chai.expect)(key).to.equal('/users/1');
-                (0, _chai.expect)(arguments.length <= 1 ? undefined : arguments[1]).to.equal('test');
-                (0, _chai.expect)(arguments.length <= 2 ? undefined : arguments[2]).to.equal('hi!');
+            route('/test').subscribe(function (key) {
+                (0, _chai.expect)(key).to.equal('/test');
+                (0, _chai.expect)(arguments.length <= 1 ? undefined : arguments[1]).to.equal('hi!');
 
                 done();
             });
