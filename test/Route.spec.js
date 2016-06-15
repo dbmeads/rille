@@ -180,9 +180,8 @@ describe('Route', () => {
             var route = Route({
                 middleware: {
                     '/users/*': [
-                        (...entry) => {
-                            entry.push('hi!');
-                            return ['/test', 'hi!'];
+                        route => {
+                            route('/test').push('hi!');
                         }
                     ]
                 }
@@ -191,6 +190,27 @@ describe('Route', () => {
             route('/test').subscribe((key, ...values) => {
                 expect(key).to.equal('/test');
                 expect(values[0]).to.equal('hi!');
+
+                done();
+            });
+
+            route('/users/1').push('test');
+        });
+
+        it('should be able act as a passthrough', done => {
+            var route = Route({
+                middleware: {
+                    '/users/*': [
+                        (route, next, key, ...values) => {
+                            next(...values);
+                        }
+                    ]
+                }
+            });
+
+            route('/users/*').subscribe((key, ...values) => {
+                expect(key).to.equal('/users/1');
+                expect(values[0]).to.equal('test');
 
                 done();
             });

@@ -154,6 +154,9 @@ console.log('message is "' + child.values(0) + '".');
 
 ## Change Log
 
+#### 0.28.0
+1. Reworked `middleware` to support async behaviour and provide access to the route object.
+
 #### 0.26.0
 1. Added early `middleware` implementation.
 

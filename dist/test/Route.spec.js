@@ -192,13 +192,8 @@ describe('Route', function () {
         it('should be able to manipulate entries', function (done) {
             var route = (0, _index.Route)({
                 middleware: {
-                    '/users/*': [function () {
-                        for (var _len2 = arguments.length, entry = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
-                            entry[_key2] = arguments[_key2];
-                        }
-
-                        entry.push('hi!');
-                        return ['/test', 'hi!'];
+                    '/users/*': [function (route) {
+                        route('/test').push('hi!');
                     }]
                 }
             });
@@ -206,6 +201,29 @@ describe('Route', function () {
             route('/test').subscribe(function (key) {
                 (0, _chai.expect)(key).to.equal('/test');
                 (0, _chai.expect)(arguments.length <= 1 ? undefined : arguments[1]).to.equal('hi!');
+
+                done();
+            });
+
+            route('/users/1').push('test');
+        });
+
+        it('should be able act as a passthrough', function (done) {
+            var route = (0, _index.Route)({
+                middleware: {
+                    '/users/*': [function (route, next, key) {
+                        for (var _len2 = arguments.length, values = Array(_len2 > 3 ? _len2 - 3 : 0), _key2 = 3; _key2 < _len2; _key2++) {
+                            values[_key2 - 3] = arguments[_key2];
+                        }
+
+                        next.apply(undefined, values);
+                    }]
+                }
+            });
+
+            route('/users/*').subscribe(function (key) {
+                (0, _chai.expect)(key).to.equal('/users/1');
+                (0, _chai.expect)(arguments.length <= 1 ? undefined : arguments[1]).to.equal('test');
 
                 done();
             });
