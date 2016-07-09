@@ -25,42 +25,24 @@ function _Route(key, parent, options) {
         keys.push(key);
     }
 
-    function _functionTree(route, func) {
-        var tree = function tree() {
-            for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-                args[_key] = arguments[_key];
-            }
-
-            if (route[func]) {
-                return route[func].apply(null, args);
-            }
-        };
-
-        Object.keys(route.children).forEach(function (key) {
-            return tree[key] = _functionTree(route.children[key], func);
-        });
-
-        return tree;
-    }
-
     // Propogate middleware
     function propogate(route, next) {
-        for (var _len2 = arguments.length, entry = Array(_len2 > 2 ? _len2 - 2 : 0), _key2 = 2; _key2 < _len2; _key2++) {
-            entry[_key2 - 2] = arguments[_key2];
+        for (var _len = arguments.length, entry = Array(_len > 2 ? _len - 2 : 0), _key = 2; _key < _len; _key++) {
+            entry[_key - 2] = arguments[_key];
         }
 
         root().propagate(_Key2.default.parse(entry[0]), entry);
     }
 
     function next(funcs, pos, key) {
-        for (var _len3 = arguments.length, values = Array(_len3 > 3 ? _len3 - 3 : 0), _key3 = 3; _key3 < _len3; _key3++) {
-            values[_key3 - 3] = arguments[_key3];
+        for (var _len2 = arguments.length, values = Array(_len2 > 3 ? _len2 - 3 : 0), _key2 = 3; _key2 < _len2; _key2++) {
+            values[_key2 - 3] = arguments[_key2];
         }
 
         if (pos < funcs.length) {
             funcs[pos].apply(funcs, [root().wrapped, function () {
-                for (var _len4 = arguments.length, values = Array(_len4), _key4 = 0; _key4 < _len4; _key4++) {
-                    values[_key4] = arguments[_key4];
+                for (var _len3 = arguments.length, values = Array(_len3), _key3 = 0; _key3 < _len3; _key3++) {
+                    values[_key3] = arguments[_key3];
                 }
 
                 ++pos;
@@ -79,10 +61,10 @@ function _Route(key, parent, options) {
 
         try {
             for (var _iterator = keys[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-                var _key5 = _step.value;
+                var _key4 = _step.value;
 
-                if (cur[_key5]) {
-                    cur = cur[_key5];
+                if (cur[_key4]) {
+                    cur = cur[_key4];
                 } else if (cur['*']) {
                     cur = cur['*'];
                 } else {
@@ -122,21 +104,6 @@ function _Route(key, parent, options) {
         ensureGen: function ensureGen(obj, key) {
             return obj[key] ? obj[key] : obj[key] = new _Route(key, route);
         },
-        functionTree: function functionTree(func) {
-            return _functionTree(route, func);
-        },
-        functionTrees: function functionTrees() {
-            var obj = {};
-
-            for (var _len5 = arguments.length, funcs = Array(_len5), _key6 = 0; _key6 < _len5; _key6++) {
-                funcs[_key6] = arguments[_key6];
-            }
-
-            funcs.forEach(function (func) {
-                return obj[func] = _functionTree(route, func);
-            });
-            return obj;
-        },
         nextGen: function nextGen(key) {
             return key === '*' ? route.ensureGen(route, key) : route.ensureGen(route.children, key);
         },
@@ -159,8 +126,8 @@ function _Route(key, parent, options) {
 
         root: root,
         push: function push() {
-            for (var _len6 = arguments.length, values = Array(_len6), _key7 = 0; _key7 < _len6; _key7++) {
-                values[_key7] = arguments[_key7];
+            for (var _len4 = arguments.length, values = Array(_len4), _key5 = 0; _key5 < _len4; _key5++) {
+                values[_key5] = arguments[_key5];
             }
 
             next.apply(undefined, [middleware(keys), 0, _Key2.default.stringify(keys)].concat(values));
@@ -231,8 +198,6 @@ function calcMiddleware(map) {
 
 function wrap(route) {
     var childKeys = route.childKeys;
-    var functionTree = route.functionTree;
-    var functionTrees = route.functionTrees;
     var key = route.key;
     var push = route.push;
     var subscribe = route.subscribe;
@@ -243,10 +208,12 @@ function wrap(route) {
         return route.child(_Key2.default.parse(key)).wrapped;
     }, {
         childKeys: childKeys,
-        functionTree: functionTree,
-        functionTrees: functionTrees,
         key: key,
-        push: push,
+        push: function push() {
+            route.push.apply(this, arguments);
+            return wrapper;
+        },
+
         subscribe: subscribe,
         toJSON: toJSON
     });

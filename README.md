@@ -154,6 +154,10 @@ console.log('message is "' + child.values(0) + '".');
 
 ## Change Log
 
+#### 0.29.0
+1. Fixed a bug in `push`.
+2. Removed `functionTree` and `functionTrees` support.
+
 #### 0.28.0
 1. Reworked `middleware` to support async behaviour and provide access to the route object.
 
