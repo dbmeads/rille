@@ -49,6 +49,9 @@ import {Entry} from 'rille';
 // Returns the array of values for an entry
 var values = Entry.values(entry);
 
+// Returns a specific value for the given entry
+var value = Entry.value(entry, 0);
+
 // Returns the key of an entry
 var key = Entry.key(entry);
 
@@ -146,13 +149,16 @@ var values = child.values();
 console.log('most recent values ' + JSON.stringify(values));
 
 // Get a particular value from the most recent entry
-console.log('message is "' + child.values(0) + '".');
+console.log('message is "' + child.value(0) + '".');
 
 ```
 
 [Back To Top](#quick-links)
 
 ## Change Log
+
+#### 0.31.0
+1. Add `Entry.value(entry, loc)` and `store.value(loc)`.
 
 #### 0.29.0
 1. Fixed a bug in `push`.
