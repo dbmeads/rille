@@ -33,8 +33,8 @@ describe('Store', function () {
     it('should return requested value', function () {
         store.push(1, 2, 3);
 
-        (0, _chai.expect)(store.values(0)).to.equal(1);
-        (0, _chai.expect)(store.values(1)).to.equal(2);
-        (0, _chai.expect)(store.values(2)).to.equal(3);
+        (0, _chai.expect)(store.value(0)).to.equal(1);
+        (0, _chai.expect)(store.value(1)).to.equal(2);
+        (0, _chai.expect)(store.value(2)).to.equal(3);
     });
 });

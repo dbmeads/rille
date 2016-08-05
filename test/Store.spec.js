@@ -30,8 +30,8 @@ describe('Store', () => {
     it('should return requested value', () => {
         store.push(1,2,3);
 
-        expect(store.values(0)).to.equal(1);
-        expect(store.values(1)).to.equal(2);
-        expect(store.values(2)).to.equal(3);
+        expect(store.value(0)).to.equal(1);
+        expect(store.value(1)).to.equal(2);
+        expect(store.value(2)).to.equal(3);
     });
 });

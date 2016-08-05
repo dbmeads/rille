@@ -31,4 +31,10 @@ describe('Entry', function () {
             (0, _chai.expect)(values.length).to.equal(0);
         });
     });
+
+    describe('value', function () {
+        it('should return value at position', function () {
+            (0, _chai.expect)(_index.Entry.value(['/key', 1, 2], 1)).to.equal(2);
+        });
+    });
 });

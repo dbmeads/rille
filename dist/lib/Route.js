@@ -3,7 +3,6 @@
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.Route = undefined;
 
 var _Key = require('./Key');
 
@@ -232,4 +231,3 @@ function Route(options) {
 }
 
 exports.default = Route;
-exports.Route = Route;

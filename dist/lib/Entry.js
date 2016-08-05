@@ -3,6 +3,16 @@
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+function key(entry) {
+    return entry[0];
+}
+
+function value(entry, loc) {
+    if (entry) {
+        return entry[loc + 1];
+    }
+}
+
 function values(entry) {
     if (Array.isArray(entry)) {
         return entry.slice(1);
@@ -10,14 +20,13 @@ function values(entry) {
     return [];
 }
 
-function key(entry) {
-    return entry[0];
-}
-
 var Entry = {
-    values: values,
-    key: key
+    key: key,
+    value: value,
+    values: values
 };
 
 exports.default = Entry;
-exports.Entry = Entry;
+exports.key = key;
+exports.value = value;
+exports.values = values;

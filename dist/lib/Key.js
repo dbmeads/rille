@@ -5,7 +5,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 var delimiter = '/';
 
-function parse(key, ordinals) {
+function parse(key, locs) {
     if (Array.isArray(key)) {
         return key;
     }
@@ -14,13 +14,13 @@ function parse(key, ordinals) {
         key = key.trim().slice(1);
     }
     var fragments = key === '' ? [] : key.split(delimiter);
-    if (ordinals) {
+    if (locs) {
         var requested = [];
-        ordinals.forEach(function (ordinal) {
-            if (ordinal < fragments.length) {
-                requested.push(fragments[ordinal]);
+        locs.forEach(function (loc) {
+            if (loc < fragments.length) {
+                requested.push(fragments[loc]);
             } else {
-                throw 'Invalid ordinal [' + ordinal + '] passed to Key.parse';
+                throw 'Invalid loc [' + loc + '] passed to Key.parse';
             }
         });
         return requested;
@@ -48,4 +48,5 @@ var Key = {
 };
 
 exports.default = Key;
-exports.Key = Key;
+exports.parse = parse;
+exports.stringify = stringify;

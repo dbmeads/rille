@@ -28,4 +28,10 @@ describe('Entry', () => {
             expect(values.length).to.equal(0);
         });
     });
+
+    describe('value', () => {
+        it('should return value at position', () => {
+            expect(Entry.value(['/key', 1, 2], 1)).to.equal(2);
+        });
+    });
 });
