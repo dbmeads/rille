@@ -34,4 +34,10 @@ describe('Store', () => {
         expect(store.value(1)).to.equal(2);
         expect(store.value(2)).to.equal(3);
     });
+
+    it('should return first value by default', () => {
+        store.push(1,2,3);
+
+        expect(store.value()).to.equal(1);
+    });
 });

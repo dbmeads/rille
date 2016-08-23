@@ -157,6 +157,9 @@ console.log('message is "' + child.value(0) + '".');
 
 ## Change Log
 
+#### 0.32.0
+1. `Entry.value(entry)` and `Store.value()` default to returning 1st value.
+
 #### 0.31.0
 1. Add `Entry.value(entry, loc)` and `store.value(loc)`.
 

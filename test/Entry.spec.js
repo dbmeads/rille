@@ -33,5 +33,9 @@ describe('Entry', () => {
         it('should return value at position', () => {
             expect(Entry.value(['/key', 1, 2], 1)).to.equal(2);
         });
+
+        it('should return first value by default', () => {
+            expect(Entry.value(['/key', 1, 2])).to.equal(1);
+        });
     });
 });

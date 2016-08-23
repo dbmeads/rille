@@ -36,5 +36,9 @@ describe('Entry', function () {
         it('should return value at position', function () {
             (0, _chai.expect)(_index.Entry.value(['/key', 1, 2], 1)).to.equal(2);
         });
+
+        it('should return first value by default', function () {
+            (0, _chai.expect)(_index.Entry.value(['/key', 1, 2])).to.equal(1);
+        });
     });
 });

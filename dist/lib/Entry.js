@@ -9,7 +9,7 @@ function key(entry) {
 
 function value(entry, loc) {
     if (entry) {
-        return entry[loc + 1];
+        return entry[(loc !== undefined ? loc : 0) + 1];
     }
 }
 
