@@ -196,11 +196,11 @@ function calcMiddleware(map) {
 }
 
 function wrap(route) {
-    var childKeys = route.childKeys;
-    var key = route.key;
-    var push = route.push;
-    var subscribe = route.subscribe;
-    var toJSON = route.toJSON;
+    var childKeys = route.childKeys,
+        key = route.key,
+        push = route.push,
+        subscribe = route.subscribe,
+        toJSON = route.toJSON;
 
 
     var wrapper = Object.assign(function (key) {

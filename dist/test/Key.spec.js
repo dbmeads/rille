@@ -19,13 +19,10 @@ describe('Key', function () {
         });
 
         it('should return specific path fragments when requested', function () {
-            var _Key$parse = _index.Key.parse('/i/am/a/key', [0, 3]);
-
-            var _Key$parse2 = _slicedToArray(_Key$parse, 2);
-
-            var a = _Key$parse2[0];
-            var b = _Key$parse2[1];
-
+            var _Key$parse = _index.Key.parse('/i/am/a/key', [0, 3]),
+                _Key$parse2 = _slicedToArray(_Key$parse, 2),
+                a = _Key$parse2[0],
+                b = _Key$parse2[1];
 
             (0, _chai.expect)(a).to.equal('i');
             (0, _chai.expect)(b).to.equal('key');
