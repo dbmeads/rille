@@ -1,8 +1,8 @@
-import {Store} from '../lib/index';
-import {expect} from 'chai';
+const {expect} = require('chai');
+const {Store} = require('../lib');
 
 describe('Store', () => {
-    var store;
+    let store;
 
     beforeEach(() => {
         store = Store();

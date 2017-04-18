@@ -2,7 +2,7 @@
   "name": "rille",
   "version": "0.32.0",
   "description": "Rille",
-  "main": "dist/lib/index.js",
+  "main": "lib/index.js",
   "author": "dbmeads@hotmail.com",
   "license": "MIT",
   "repository": {
@@ -10,12 +10,8 @@
     "url": "git://github.com/dbmeads/rille.git"
   },
   "scripts": {
-    "babel": "babel lib -d dist/lib && babel test -d dist/test",
-    "build": "npm run clean && npm run babel",
-    "clean": "rm -rf dist",
-    "coverage": "npm run build && istanbul cover ./node_modules/mocha/bin/_mocha \"dist/test/**/*.spec.js\" --report lcovonly -- -R spec && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage",
-    "mocha": "mocha \"dist/test/**/*.spec.js\"",
-    "test": "npm run build && npm run mocha"
+    "coverage": "istanbul cover ./node_modules/mocha/bin/_mocha \"test/**/*.spec.js\" --report lcovonly -- -R spec && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage",
+    "test": "mocha \"test/**/*.spec.js\""
   },
   "devDependencies": {
     "babel-cli": "^6.7.5",

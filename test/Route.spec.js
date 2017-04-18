@@ -1,9 +1,9 @@
-import {expect} from 'chai';
-import {Route} from '../lib/index';
+const {expect} = require('chai');
+const {Route} = require('../lib');
 
 describe('Route', () => {
 
-    var route;
+    let route;
 
     beforeEach(() => {
         route = Route();
@@ -68,7 +68,7 @@ describe('Route', () => {
         });
 
         it('should support relative pushes', done => {
-            var child = route('/i/am/a/child');
+            let child = route('/i/am/a/child');
 
             route('/i/am/a/child/*').subscribe((key, value) => {
                 expect(key).to.equal('/i/am/a/child/too');
@@ -80,7 +80,7 @@ describe('Route', () => {
         });
 
         it('should properly route within a route', done => {
-            var message = 'hi';
+            let message = 'hi';
 
             route('/lobby').subscribe((key, message) => {
                 expect(route('/lobby/1').key()).to.equal('/lobby/1');
@@ -94,7 +94,7 @@ describe('Route', () => {
 
     describe('plugin', () => {
         it('should support plugins', () => {
-            var route = Route({
+            let route = Route({
                 route(route) {
                     route.entry = undefined;
                     route.subscribe((...entry) => {
@@ -128,7 +128,7 @@ describe('Route', () => {
             route('/users/1');
             route('/users/2');
 
-            var keys = route('/users').childKeys();
+            let keys = route('/users').childKeys();
 
             expect(keys.length).to.equal(2);
             expect(keys.indexOf('1')).to.be.above(-1);
@@ -138,7 +138,7 @@ describe('Route', () => {
 
     describe('middleware', () => {
         it('should be able to manipulate entries', done => {
-            var route = Route({
+            let route = Route({
                 middleware: {
                     '/users/*': [
                         route => {
@@ -159,7 +159,7 @@ describe('Route', () => {
         });
 
         it('should be able act as a passthrough', done => {
-            var route = Route({
+            let route = Route({
                 middleware: {
                     '/users/*': [
                         (route, next, key, ...values) => {

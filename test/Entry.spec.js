@@ -1,5 +1,5 @@
-import {expect} from 'chai';
-import {Entry} from '../lib/index';
+const {expect} = require('chai');
+const {Entry} = require('../lib');
 
 describe('Entry', () => {
 

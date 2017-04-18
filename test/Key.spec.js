@@ -1,5 +1,5 @@
-import {expect} from 'chai';
-import {Key} from '../lib/index';
+const {expect} = require('chai');
+const {Key} = require('../lib');
 
 describe('Key', () => {
     describe('parse', () => {
@@ -14,7 +14,7 @@ describe('Key', () => {
         });
 
         it('should return specific path fragments when requested', () => {
-            var [a, b] = Key.parse('/i/am/a/key', [0, 3]);
+            let [a, b] = Key.parse('/i/am/a/key', [0, 3]);
 
             expect(a).to.equal('i');
             expect(b).to.equal('key');
