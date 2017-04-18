@@ -50,7 +50,9 @@ import {Entry} from 'rille';
 var values = Entry.values(entry);
 
 // Returns a specific value for the given entry
-var value = Entry.value(entry, 0);
+var value = Entry.value(entry, 1);
+
+value = Entry.value(
 
 // Returns the key of an entry
 var key = Entry.key(entry);
