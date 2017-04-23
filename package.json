@@ -2,7 +2,7 @@
   "name": "rille",
   "version": "0.32.0",
   "description": "Rille",
-  "main": "lib/index.js",
+  "main": "lib/Rille.js",
   "author": "dbmeads@hotmail.com",
   "license": "MIT",
   "repository": {

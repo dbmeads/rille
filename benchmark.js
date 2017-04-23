@@ -1,12 +1,13 @@
 const Benchmark = require('benchmark');
-const {Route} = require('./lib');
-
-const route = Route();
+const {Key} = require('./lib');
 
 new Benchmark
     .Suite()
-    .add('route.push', function () {
-        route.push('test');
+    .add('key.join', function () {
+        Key.join('/test', 'this', 'out');
+    })
+    .add('key.parse', function () {
+        Key.parse('/test/this/out');
     })
     .on('cycle', function (event) {
         console.log(String(event.target));
