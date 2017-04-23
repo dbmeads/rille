@@ -23,7 +23,7 @@ describe('Rille', () => {
     });
 
     it('should be able to list key', () => {
-        expect(rille('/another/route').key().toString()).to.equal('/another/route');
+        expect(rille('/another/route').key.toString()).to.equal('/another/route');
     });
 
     it('should be able to recieve event', done => {
