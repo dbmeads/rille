@@ -13,7 +13,7 @@ describe('Rille', () => {
         let child = rille('/test/this/route');
 
         expect(child).to.not.eql(rille);
-        expect(child.root()).to.eql(rille);
+        expect(child.root).to.eql(rille);
     });
 
     it('should be able to find children', () => {
