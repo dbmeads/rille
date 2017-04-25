@@ -46,4 +46,10 @@ describe('Rille', () => {
         rille('/users/1').pub({firstname: 'Dave'});
     });
 
+    it('should count number of events emitted', () => {
+        rille('/users/2').pub(1).pub(2);
+
+        expect(rille('/users/2').count()).to.eql(2);
+    });
+
 });
