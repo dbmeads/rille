@@ -11,6 +11,5 @@ cache:
 script:
   - yarn coverage
 after_script:
-  - ls -l 
   - npm install -g codeclimate-test-reporter
   - codeclimate-test-reporter < ./coverage/lcov.info
