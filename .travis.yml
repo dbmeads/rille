@@ -1,7 +1,7 @@
 language: node_js
 node_js:
   - 7.9.0
-install: npm install
+install: yarn
 addons:
   code_climate:
     repo_token: f3a8ee66a8f014150a18e38296c4999f3c81ad87f28f90ac8e223726a883a0e1
@@ -9,7 +9,7 @@ cache:
   directories:
     - node_modules
 script:
-  - npm run coverage
+  - yarn coverage
 after_script:
   - npm install -g codeclimate-test-reporter
   - codeclimate-test-reporter < ./coverage/lcov.info
